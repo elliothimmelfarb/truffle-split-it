@@ -51,7 +51,7 @@ contract SplitIt {
 
 contract SplitItCreator {
 
-  event Creation(SplitIt indexed splitItContract);
+  event Creation(SplitIt indexed contract);
 
   function createSplitIt(address[] addresses) public
   returns (SplitIt contractAddress) {
