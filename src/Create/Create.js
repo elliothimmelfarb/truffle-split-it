@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import shortid from 'shortid'
+import contract from 'truffle-contract'
 
 import AddressesPane from './AddressesPane'
 import colors from '../styles/colors'
-import Splitit from '../utils/splitit'
+import SplitItCreator from '../../build/contracts/SplitItCreator.json'
 
 const Container = styled.div`
   display: flex;
@@ -110,9 +111,12 @@ class Create extends Component {
   }
 
   handlePublish = () => {
-    if (!this.props.isConnected) return
-    this.splitit = new Splitit(this.props.web3, this.state.addresses)
-    this.splitit.initPublish()
+    const { web3 } = this.props
+    const splitItCreator = contract(SplitItCreator)
+    splitItCreator.setProvider(web3.currentProvider)
+    splitItCreator.deployed().then((instance) => {
+      console.log(instance)
+    })
   }
 
   saveAddress = (id, newAddr) => {

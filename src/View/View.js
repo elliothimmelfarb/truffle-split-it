@@ -87,7 +87,6 @@ class View extends Component {
     return new Promise((resolve, reject) => {
       if (web3.utils.isAddress(address)) {
         web3.eth.getCode(address, (err, res) => {
-          console.log('hi')
           if (err) return reject()
           if (res === '0x') return reject()
           resolve()
