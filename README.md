@@ -21,3 +21,10 @@ $ npm install
 8. Go back to Ganache on the `Accounts` view. Copy the mnemonic phrase and paste into the MetaMask seed phrase input box. 
 ![](https://user-images.githubusercontent.com/11192126/36950105-5898a840-1fae-11e8-9fd9-fdd022a237aa.png)
 9. Make an easy to remember password (this is for development!) and confirm. You should then have access to the accounts on the test network and the Ether that was seeded in them. You have now connected your browser to the development Ethereum network running on Ganache.
+10. Now you are ready to deploy the contracts. Go back to the command line and and run the following commands:
+```
+$ truffle compile
+$ truffle migrate
+```
+11. The `truffle migrate` command will display the addresses of the deployed contract. You can access the ABIs in the `build/contracts` directory of your local project.
+12. Look at the [Truffle Docs - Interacting with Your Contracts](http://truffleframework.com/docs/getting_started/contracts) page to start interacting the with contracts. You can even run a different project (e.g. http://www.kevinmhealy.com/experiments/ethereum-tests/functions-2/) and still interact with the contracts you deployed from this project as long as you don't shut down Ganache.
