@@ -113,7 +113,7 @@ class Address extends React.Component {
     }
   }
 
-  handleSave = (value) => {
+  handleSave = () => {
     const { id, saveAddress } = this.props
     saveAddress(id, this.state.value)
     this.setState({ editing: false })
