@@ -1,19 +1,13 @@
 pragma solidity ^0.4.16;
+
 contract SplitIt {
 
   address[] employees;
   uint totalReceived;
   mapping (address => uint) withdrawnAmounts;
 
-  event FirstAddress(address indexed firstAddress);
-
   function SplitIt(address[] _employees) payable public {
     employees = _employees;
-
-    if (_employees.length > 0) {
-      FirstAddress(_employees[0]);
-    }
-
     updateTotalReceived();
   }
 
@@ -54,6 +48,7 @@ contract SplitIt {
   }
 
 }
+
 contract SplitItCreator {
 
   event Creation(SplitIt indexed splitItContract);
