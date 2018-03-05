@@ -77,9 +77,11 @@ class Create extends Component {
   static propTypes = {
     web3: PropTypes.object,
     isConnected: PropTypes.bool.isRequired,
+    currentAccount: PropTypes.string,
   }
   static defaultProps = {
     web3: {},
+    currentAccount: '0x'
   }
 
   constructor(props) {
@@ -111,11 +113,20 @@ class Create extends Component {
   }
 
   handlePublish = () => {
-    const { web3 } = this.props
+    const { web3, currentAccount } = this.props
+    let { addresses } = this.state
+
+    addresses = Object.keys(addresses).map(id =>
+      addresses[id].address
+    )
+
     const splitItCreator = contract(SplitItCreator)
     splitItCreator.setProvider(web3.currentProvider)
+
     splitItCreator.deployed().then((instance) => {
-      console.log(instance)
+      instance.createSplitIt(addresses, {from: currentAccount})
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
     })
   }
 
