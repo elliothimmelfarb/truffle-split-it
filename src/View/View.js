@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import contract from 'truffle-contract';
 
 import AddressSearch from './AddressSearch'
 import ViewAddressesPane from './ViewAddressesPane'
+import SplitIt from '../../build/contracts/SplitIt.json'
 
 const Container = styled.div`
   display: flex;
@@ -67,19 +69,34 @@ class View extends Component {
       searchSuccessful: false,
       isSearching: false,
       targetContractAddress: '',
+      addressList: [],
     }
   }
 
   handleSearch = (targetAddress) => {
+    const { web3, currentAccount } = this.props
+
     this.setState({
       isSearching: true,
     })
+
+    const splitIt = contract(SplitIt)
+    splitIt.setProvider(web3.currentProvider)
+
+    const instance = splitIt.at(targetAddress)
+
+    // requesting an array from a contract will return only
+    // one value at the index provided as a parameter.
+    instance.employees.call(0, {from: currentAccount})
+    .then(res => console.log('res:', res))
+    .catch(err => console.log('err:', err))
+
     this.setState({
       isSearching: false,
       searchSuccessful: true,
       targetContractAddress: targetAddress,
     })
-    this.getContract()
+
   }
 
   validateAddress = (address) => {
