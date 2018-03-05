@@ -2,7 +2,7 @@ pragma solidity ^0.4.16;
 
 contract SplitIt {
 
-  address[] employees;
+  address[] public employees;
   uint totalReceived;
   mapping (address => uint) withdrawnAmounts;
 
