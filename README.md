@@ -14,7 +14,7 @@ $ git clone https://github.com/elliothimmelfarb/truffle-split-it.git
 $ cd truffle-split-it
 $ npm install
 ```
-5. Run Ganache and open the Ganache options with the "cog icon in the top right:
+5. Run Ganache and open the Ganache options with the "cog" icon in the top right:
 ![](https://user-images.githubusercontent.com/11192126/36949988-ee94f3c8-1fac-11e8-9860-9354f0885666.png)
 6. Ensure that the RPC server is being hosted on port 8545. Also, set the mining block time to 3 seconds. Restart the network to accept changes and ensure the top bar matches this: 
 ![](https://user-images.githubusercontent.com/11192126/36949949-1ccdbf14-1fac-11e8-80a0-1bc110bb46f8.png)
