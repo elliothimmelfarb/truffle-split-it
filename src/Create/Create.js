@@ -125,7 +125,11 @@ class Create extends Component {
 
     splitItCreator.deployed().then((instance) => {
       instance.createSplitIt(addresses, {from: currentAccount})
-      .then(res => console.log(res))
+      .then(res => {
+        console.log(res)
+        const newAddress = res.logs[0].args.contractAddress
+        alert(`Your new SplitIt contract address is: ${newAddress} (copy and save it!)`)
+      })
       .catch(err => console.log(err))
     })
   }
