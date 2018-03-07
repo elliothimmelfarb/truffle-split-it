@@ -85,30 +85,24 @@ class View extends Component {
 
     const instance = splitIt.at(targetAddress)
 
-    // requesting an array from a contract will return only
-    // one value at the index provided as a parameter.
-    // instance.employees.call(0, {from: currentAccount})
-    // .then(res => console.log('res:', res))
-    // .catch(err => console.log('err:', err))
 
     instance.getEmployeeCount.call({from: currentAccount})
     .then(async res => {
-      console.log('res:', Number(res))
       const count = Number(res)
       const addressList = []
       for (let i = 0; i < count; i += 1) {
         const address = await instance.employees.call(i, {from: currentAccount})
         addressList.push(address)
       }
-      this.setState({addressList})
+      this.setState({
+        addressList,
+        isSearching: false,
+        searchSuccessful: true,
+        targetContractAddress: targetAddress,
+      })
     })
     .catch(err => console.log('err:', err))
 
-    this.setState({
-      isSearching: false,
-      searchSuccessful: true,
-      targetContractAddress: targetAddress,
-    })
 
   }
 
@@ -148,7 +142,9 @@ class View extends Component {
             validateAddress={this.validateAddress}
           />
           <ViewArea>
-            <ViewAddressesPane />
+            <ViewAddressesPane
+              addressList={this.state.addressList}
+            />
           </ViewArea>
         </PaddingContainer>
       </Container>
