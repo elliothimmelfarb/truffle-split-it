@@ -85,7 +85,6 @@ class View extends Component {
 
     const instance = splitIt.at(targetAddress)
 
-
     instance.getEmployeeCount.call({from: currentAccount})
     .then(async res => {
       const count = Number(res)
