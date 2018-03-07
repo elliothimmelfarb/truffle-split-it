@@ -21,8 +21,12 @@ contract SplitIt {
     totalReceived += msg.value;
   }
 
-  modifier canWithdraw() {
+  function getEmployeeCount() public constant
+  returns(uint count) {
+    return employees.length;
+  }
 
+  modifier canWithdraw() {
     bool contains = false;
 
     for(uint i = 0; i < employees.length; i++) {
@@ -33,7 +37,6 @@ contract SplitIt {
 
     require(contains);
     _;
-
   }
 
   function withdraw() canWithdraw public {
