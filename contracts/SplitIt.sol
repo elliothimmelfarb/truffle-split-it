@@ -21,7 +21,7 @@ contract SplitIt {
     totalReceived += msg.value;
   }
 
-  function getEmployeeCount() public constant
+  function getSpliteeCount() public constant
   returns(uint count) {
     return splitees.length;
   }
