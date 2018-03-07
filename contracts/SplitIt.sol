@@ -2,13 +2,13 @@ pragma solidity ^0.4.16;
 
 contract SplitIt {
 
-  address[] public employees;
+  address[] public splitees;
   uint totalReceived;
   mapping (address => uint) withdrawnAmounts;
 
-  function SplitIt(address[] _employees) payable public {
-    for(uint8 index = 0; index < _employees.length; index++) {
-      employees.push(_employees[index]);
+  function SplitIt(address[] _splitees) payable public {
+    for(uint8 index = 0; index < _splitees.length; index++) {
+      splitees.push(_splitees[index]);
     }
     updateTotalReceived();
   }
@@ -23,14 +23,14 @@ contract SplitIt {
 
   function getEmployeeCount() public constant
   returns(uint count) {
-    return employees.length;
+    return splitees.length;
   }
 
   modifier canWithdraw() {
     bool contains = false;
 
-    for(uint i = 0; i < employees.length; i++) {
-      if (employees[i] == msg.sender) {
+    for(uint i = 0; i < splitees.length; i++) {
+      if (splitees[i] == msg.sender) {
         contains = true;
       }
     }
@@ -41,7 +41,7 @@ contract SplitIt {
 
   function withdraw() canWithdraw public {
 
-    uint amountAllocated = totalReceived/employees.length;
+    uint amountAllocated = totalReceived/splitees.length;
     uint amountWithdrawn = withdrawnAmounts[msg.sender];
     uint amount = amountAllocated - amountWithdrawn;
     withdrawnAmounts[msg.sender] = amountWithdrawn + amount;
