@@ -1,15 +1,13 @@
 // `chai` is an assertion library. `expect` from chai is an
-// assertion syntax
+// assertion syntax style
 const  expect = require('chai').expect
 
 // `artifacts.require()` creates an abstraction insterface object
 // of a named contract compiled from the .sol files in the
 // contracts folder
-const SplitItCreator = artifacts.require("SplitItCreator");
+const SplitItCreator = artifacts.require('SplitItCreator');
 const SplitIt = artifacts.require('SplitIt')
 
-// globals
-let splitItAddress = ''
 const addresses = [
   '0x627306090abaB3A6e1400e9345bC60c78a8BEf57',
   '0xf17f52151EbEF6C7334FAD080c5704D77216b732',
@@ -18,45 +16,30 @@ const addresses = [
   '0x0d1d4e623D10F9FBA5Db95830F7d3839406C6AF2',
 ]
 
-// `contract` namespaces the test. First param is displayed on
-// the outermost level of the test output. The call back is gets
-contract('SplitItCreator', (accounts) => {
+// `contract` namespaces the test. The first param is displayed on
+// the outermost level of the test output. The callback gets the accounts
+// array
+contract('SplitItCreator', async (accounts) => {
 
   // `it` also namespaces. Results (passed/failed) are displayed for
   // each instance of `it`
-  it("should deploy and emit event", () => {
-
-
-    return SplitItCreator.deployed().then(function(instance) {
-
-      // remember to always return final statements from your
-      // callback functions if they are asynchronous, otherwise
-      // next steps will not wait
-
-      return instance.createSplitIt(addresses, {from: accounts[0]})
-      .then(res => {
-        const newAddress = res.logs[0].args.contractAddress
-        splitItAddress = newAddress
-        expect(newAddress).to.exist()
-        expect(newAddress).to.be.a('string')
-        expect(newAddress).to.have.LengthOf(42)
-      })
-      .catch(err => console.log)
-    })
+  it("should emit event with new SplitIt address during creation", async () => {
+    const instance = await SplitItCreator.deployed()
+    const res = await instance.createSplitIt(addresses, {from: accounts[0]})
+    const newAddress = res.logs[0].args.contractAddress
+    console.log('newAddress:', newAddress)
+    expect(newAddress).to.have.length(42)
   });
-
-
 });
 
-contract('SplitIt', (accounts) => {
-  it('should contain expected splitee array of proper length', () => {
-    console.log(splitItAddress)
-    const instance = SplitIt.at(splitItAddress)
-    return instance.getSpliteeCount.call({from: accounts[0]}).then(res => {
-      console.log(res)
-      const count = Number(res)
-      expect(count).to.equal(addresses.length)
-    })
+// `async` functions allow us to use the `await` keyword which waits for a
+// promise to be resolved and returns what would be passed to the `.then()`
+contract('SplitIt', async (accounts) => {
+  it('should return expected splitee array length from getSpliteeCount', async () => {
+    const instance = await SplitIt.new(addresses)
+    const res = await instance.getSpliteeCount.call({from: accounts[0]})
+    console.log('res:', res)
+    const count = Number(res)
+    expect(count).to.equal(addresses.length)
   })
-
 })
