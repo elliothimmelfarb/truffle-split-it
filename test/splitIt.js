@@ -43,3 +43,25 @@ contract('SplitIt', async (accounts) => {
     expect(count).to.equal(addresses.length)
   })
 })
+
+
+/* Output from tests (03/06/2018):
+$ truffle test
+Using network 'development'.
+
+
+
+
+  Contract: SplitItCreator
+newAddress: 0x2cfc2b0e2b4f0d33105054f3e130954ee6eec839
+    ✓ should emit event with new SplitIt address during creation (3047ms)
+
+  Contract: SplitIt
+res: BigNumber { s: 1, e: 0, c: [ 5 ] }
+    ✓ should return expected splitee array length from getSpliteeCount (5079ms)
+
+
+  2 passing (8s)
+$
+
+*/
