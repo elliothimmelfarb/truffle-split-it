@@ -91,7 +91,7 @@ class View extends Component {
       const count = Number(res)
       const addressList = []
       for (let i = 0; i < count; i += 1) {
-        const address = await instance.employees.call(i, {from: currentAccount})
+        const address = await instance.splitees.call(i, {from: currentAccount})
         addressList.push(address)
       }
       this.setState({
