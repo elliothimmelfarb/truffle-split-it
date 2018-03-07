@@ -1,10 +1,16 @@
+// To run tests against our solidity code after merge to master:
+// 1. pull master branch
+// 2. npm install (only first time after merge)
+// 3. run Ganache
+// 4. run `truffle test`
+
 // `chai` is an assertion library. `expect` from chai is an
 // assertion syntax style
 const  expect = require('chai').expect
 
 // `artifacts.require()` creates an abstraction insterface object
 // of a named contract compiled from the .sol files in the
-// contracts folder
+// contracts folder of this project
 const SplitItCreator = artifacts.require('SplitItCreator');
 const SplitIt = artifacts.require('SplitIt')
 
@@ -23,45 +29,45 @@ contract('SplitItCreator', async (accounts) => {
 
   // `it` also namespaces. Results (passed/failed) are displayed for
   // each instance of `it`
-  it("should emit event with new SplitIt address during creation", async () => {
+  it('should emit event with new SplitIt address during creation', async () => {
     const instance = await SplitItCreator.deployed()
     const res = await instance.createSplitIt(addresses, {from: accounts[0]})
     const newAddress = res.logs[0].args.contractAddress
-    console.log('newAddress:', newAddress)
     expect(newAddress).to.have.length(42)
+    expect(newAddress.slice(0, 6)).to.not.equal('0x0000')
   });
 });
 
 // `async` functions allow us to use the `await` keyword which waits for a
 // promise to be resolved and returns what would be passed to the `.then()`
 contract('SplitIt', async (accounts) => {
-  it('should return expected splitee array length from getSpliteeCount', async () => {
-    const instance = await SplitIt.new(addresses)
-    const res = await instance.getSpliteeCount.call({from: accounts[0]})
-    console.log('res:', res)
-    const count = Number(res)
-    expect(count).to.equal(addresses.length)
+
+  // `describe` can also be used for greater specificity in the output
+  describe('getSpliteeCount()', () => {
+
+    it('should return expected splitee array length', async () => {
+      const instance = await SplitIt.new(addresses)
+      const res = await instance.getSpliteeCount.call({from: accounts[0]})
+      const count = Number(res)
+      expect(count).to.equal(addresses.length)
+    })
   })
 })
 
 
 /* Output from tests (03/06/2018):
-$ truffle test
 Using network 'development'.
 
 
 
-
   Contract: SplitItCreator
-newAddress: 0x2cfc2b0e2b4f0d33105054f3e130954ee6eec839
-    ✓ should emit event with new SplitIt address during creation (3047ms)
+    ✓ should emit event with new SplitIt address during creation (3038ms)
 
   Contract: SplitIt
-res: BigNumber { s: 1, e: 0, c: [ 5 ] }
-    ✓ should return expected splitee array length from getSpliteeCount (5079ms)
+    getSpliteeCount()
+      ✓ should return expected splitee array length (5070ms)
 
 
   2 passing (8s)
-$
 
 */
