@@ -7,7 +7,9 @@ contract SplitIt {
   mapping (address => uint) withdrawnAmounts;
 
   function SplitIt(address[] _employees) payable public {
-    employees = _employees;
+    for(uint8 index = 0; index < _employees.length; index++) {
+      employees.push(_employees[index]);
+    }
     updateTotalReceived();
   }
 
