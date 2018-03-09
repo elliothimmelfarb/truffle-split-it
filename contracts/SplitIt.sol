@@ -2,14 +2,12 @@ pragma solidity ^0.4.16;
 
 contract SplitIt {
 
-  address[] public splitees;
+  address[] public receivingAddresses;
   uint totalReceived;
   mapping (address => uint) withdrawnAmounts;
 
-  function SplitIt(address[] _splitees) payable public {
-    for(uint8 index = 0; index < _splitees.length; index++) {
-      splitees.push(_splitees[index]);
-    }
+  function SplitIt(address[] _receivingAddresses) payable public {
+    receivingAddresses = _receivingAddresses;
     updateTotalReceived();
   }
 
@@ -21,16 +19,16 @@ contract SplitIt {
     totalReceived += msg.value;
   }
 
-  function getSpliteeCount() public constant
+  function numberOfReceivingAddresses() public constant
   returns(uint count) {
-    return splitees.length;
+    return receivingAddresses.length;
   }
 
   modifier canWithdraw() {
     bool contains = false;
 
-    for(uint i = 0; i < splitees.length; i++) {
-      if (splitees[i] == msg.sender) {
+    for(uint i = 0; i < receivingAddresses.length; i++) {
+      if (receivingAddresses[i] == msg.sender) {
         contains = true;
       }
     }
@@ -41,7 +39,7 @@ contract SplitIt {
 
   function withdraw() canWithdraw public {
 
-    uint amountAllocated = totalReceived/splitees.length;
+    uint amountAllocated = totalReceived/receivingAddresses.length;
     uint amountWithdrawn = withdrawnAmounts[msg.sender];
     uint amount = amountAllocated - amountWithdrawn;
     withdrawnAmounts[msg.sender] = amountWithdrawn + amount;
@@ -58,8 +56,8 @@ contract SplitItCreator {
 
   event Creation(SplitIt indexed contractAddress);
 
-  function createSplitIt(address[] addresses) public {
-    SplitIt splitIt = new SplitIt(addresses);
+  function createSplitIt(address[] receivingAddresses) public {
+    SplitIt splitIt = new SplitIt(receivingAddresses);
     Creation(splitIt);
   }
 
