@@ -45,7 +45,7 @@ contract('SplitIt', async (accounts) => {
   // `describe` can also be used for greater specificity in the output
   describe('numberOfReceivingAddresses()', () => {
 
-    it('should return expected splitee array length', async () => {
+    it('should return expected receivingAddresses array length', async () => {
       const instance = await SplitIt.new(addresses)
       const res = await instance.numberOfReceivingAddresses.call({from: accounts[0]})
       const count = Number(res)
@@ -65,7 +65,7 @@ Using network 'development'.
 
   Contract: SplitIt
     numberOfReceivingAddresses()
-      ✓ should return expected splitee array length (5070ms)
+      ✓ should return expected receivingAddresses array length (5070ms)
 
 
   2 passing (8s)
