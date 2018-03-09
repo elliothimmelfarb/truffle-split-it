@@ -86,12 +86,12 @@ class View extends Component {
     const instance = splitIt.at(targetAddress)
 
 
-    instance.getSpliteeCount.call({from: currentAccount})
+    instance.numberOfReceivingAddresses.call({from: currentAccount})
     .then(async res => {
       const count = Number(res)
       const addressList = []
       for (let i = 0; i < count; i += 1) {
-        const address = await instance.splitees.call(i, {from: currentAccount})
+        const address = await instance.receivingAddresses.call(i, {from: currentAccount})
         addressList.push(address)
       }
       this.setState({
