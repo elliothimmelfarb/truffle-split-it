@@ -17,6 +17,10 @@ const AppContainer = styled.div`
   flex-direction: column;
   height: 100vh;
   background-color: ${colors.container};
+  max-width: 736px;
+  align-self: center;
+  margin: 0 auto;
+  display: flex;
 `
 const RoutesContainer = styled.div`
   flex: 13 0;
