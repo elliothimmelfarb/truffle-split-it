@@ -125,7 +125,7 @@ class Address extends React.Component {
     }
   }
 
-  handleSave = (e) => {
+  handleSave = () => {
     const { id, saveAddress } = this.props
     saveAddress(id, this.state.value)
     this.setState({ editing: false })
@@ -165,7 +165,7 @@ class Address extends React.Component {
             </InputContainer>
             <ButtonContainer>
               <SaveButton
-                onClick={ (e) => isValid ? this.handleSave(e) : '' }
+                onClick={ () => isValid ? this.handleSave() : '' }
                 isvalid={ isValid }
               >
                 Save

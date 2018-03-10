@@ -134,7 +134,7 @@ class Create extends Component {
     this.setState({ addresses })
   }
 
-  handlePublish = (e) => {
+  handlePublish = () => {
     const { web3, currentAccount } = this.props
     let { addresses } = this.state
 
