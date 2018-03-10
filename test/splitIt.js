@@ -43,11 +43,11 @@ contract('SplitItCreator', async (accounts) => {
 contract('SplitIt', async (accounts) => {
 
   // `describe` can also be used for greater specificity in the output
-  describe('getSpliteeCount()', () => {
+  describe('numberOfReceivingAddresses()', () => {
 
-    it('should return expected splitee array length', async () => {
+    it('should return expected receivingAddresses array length', async () => {
       const instance = await SplitIt.new(addresses)
-      const res = await instance.getSpliteeCount.call({from: accounts[0]})
+      const res = await instance.numberOfReceivingAddresses.call({from: accounts[0]})
       const count = Number(res)
       expect(count).to.equal(addresses.length)
     })
@@ -64,8 +64,8 @@ Using network 'development'.
     ✓ should emit event with new SplitIt address during creation (3038ms)
 
   Contract: SplitIt
-    getSpliteeCount()
-      ✓ should return expected splitee array length (5070ms)
+    numberOfReceivingAddresses()
+      ✓ should return expected receivingAddresses array length (5070ms)
 
 
   2 passing (8s)
