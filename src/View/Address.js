@@ -7,6 +7,8 @@ const Container = styled.div`
   flex: 1 0;
   display: flex;
   align-items: center;
+  color: white;
+  border: 1px solid white;
 `
 
 class Address extends React.Component {
