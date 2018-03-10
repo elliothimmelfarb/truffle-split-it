@@ -54,14 +54,24 @@ const PublishButton = styled.div`
   border-radius: 5px;
   font-size: .9em;
   cursor: pointer;
+  ${'' /* target devices with no hover */}
   @media (hover:none) {
     &:active {
-      background-color: #326E9C;
+      background-color: ${
+        props => props.disabled ?
+        colors.button_disabled_bg :
+        '#326E9C'
+      };
     }
   }
+  ${'' /* target devices with hover */}
   @media (hover:hover) {
     &:hover {
-      background-color: #326E9C;
+      background-color: ${
+        props => props.disabled ?
+        colors.button_disabled_bg :
+        '#326E9C'
+      };
     }
   }
 }
