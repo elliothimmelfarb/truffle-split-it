@@ -46,17 +46,35 @@ const PublishButton = styled.div`
   height: 60%;
   background-color: ${
     props => props.disabled ?
-      colors.button_disabled_bg :
-      colors.button_background
+    colors.button_disabled_bg :
+    colors.button_background
   };
   color: ${colors.button_content};
   border: solid 1px ${colors.button_stroke};
   border-radius: 5px;
   font-size: .9em;
   cursor: pointer;
-  &:hover {
-    background-color: #326E9C;
+  ${'' /* target devices with no hover */}
+  @media (hover:none) {
+    &:active {
+      background-color: ${
+        props => props.disabled ?
+        colors.button_disabled_bg :
+        '#326E9C'
+      };
+    }
   }
+  ${'' /* target devices with hover */}
+  @media (hover:hover) {
+    &:hover {
+      background-color: ${
+        props => props.disabled ?
+        colors.button_disabled_bg :
+        '#326E9C'
+      };
+    }
+  }
+}
 `
 const Title = styled.div`
   display: flex;
