@@ -57,6 +57,10 @@ const SaveButton = styled.div`
   border-left: none;
   padding: 0 10px;
   color: ${colors.button_content};
+  cursor: pointer;
+  &:hover {
+    background-color: #FFFFFF;
+  }
 `
 const LockedInput = styled.div`
   display: flex;
