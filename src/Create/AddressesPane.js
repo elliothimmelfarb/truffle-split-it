@@ -32,6 +32,7 @@ const AddButton = styled.div`
   align-items: center;
   color: white;
   border-radius: 0 0 5px 5px;
+  cursor: pointer;
   &:hover {
     background-color: #326E9C;
   }

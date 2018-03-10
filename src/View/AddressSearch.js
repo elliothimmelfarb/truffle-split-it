@@ -60,6 +60,7 @@ const SearchButton = styled.div`
   border: 1px solid ${colors.button_stroke};
   border-left: none;
   color: ${colors.button_content};
+  cursor: pointer;
   &:hover {
     background-color: #326E9C;
   }

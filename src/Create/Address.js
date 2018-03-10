@@ -87,6 +87,7 @@ const EditButton = styled.div`
   border: 1px solid ${colors.button_stroke};
   border-radius: 5px;
   margin-right: 5px;
+  cursor: pointer;
   &:hover {
     background-color: #326E9C;
   }
@@ -100,6 +101,7 @@ const DeleteButton = styled.div`
   background-color: ${colors.delete_button_background};
   border: 1px solid ${colors.delete_button_stroke};
   border-radius: 5px;
+  cursor: pointer;
   &:hover {
     background-color: #690800;
   }
