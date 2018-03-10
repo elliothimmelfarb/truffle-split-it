@@ -53,6 +53,9 @@ const PublishButton = styled.div`
   border: solid 1px ${colors.button_stroke};
   border-radius: 5px;
   font-size: .9em;
+  &:hover {
+    background-color: #326E9C;
+  }
 `
 const Title = styled.div`
   display: flex;

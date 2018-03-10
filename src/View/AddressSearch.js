@@ -60,6 +60,9 @@ const SearchButton = styled.div`
   border: 1px solid ${colors.button_stroke};
   border-left: none;
   color: ${colors.button_content};
+  &:hover {
+    background-color: #326E9C;
+  }
 `
 const EditButton = styled.div`
   display: flex;

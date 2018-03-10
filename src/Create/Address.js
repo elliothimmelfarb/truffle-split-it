@@ -59,7 +59,7 @@ const SaveButton = styled.div`
   color: ${colors.button_content};
   cursor: pointer;
   &:hover {
-    background-color: #FFFFFF;
+    background-color: #326E9C;
   }
 `
 const LockedInput = styled.div`
@@ -87,6 +87,9 @@ const EditButton = styled.div`
   border: 1px solid ${colors.button_stroke};
   border-radius: 5px;
   margin-right: 5px;
+  &:hover {
+    background-color: #326E9C;
+  }
 `
 const DeleteButton = styled.div`
   display: flex;
@@ -96,7 +99,10 @@ const DeleteButton = styled.div`
   justify-content: center;
   background-color: ${colors.delete_button_background};
   border: 1px solid ${colors.delete_button_stroke};
-  border-radius: 5px
+  border-radius: 5px;
+  &:hover {
+    background-color: #690800;
+  }
 `
 
 class Address extends React.Component {

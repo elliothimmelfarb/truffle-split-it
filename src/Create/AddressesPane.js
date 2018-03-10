@@ -32,6 +32,9 @@ const AddButton = styled.div`
   align-items: center;
   color: white;
   border-radius: 0 0 5px 5px;
+  &:hover {
+    background-color: #326E9C;
+  }
   ${'' /* border: solid 1px ${colors.button_stroke}; */}
 `
 
