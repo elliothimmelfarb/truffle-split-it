@@ -6,7 +6,6 @@ import contract from 'truffle-contract';
 import AddressSearch from './AddressSearch'
 import ViewAddressesPane from './ViewAddressesPane'
 import SplitIt from '../../build/contracts/SplitIt.json'
-
 import {
   Container,
   PaddingContainer,
@@ -76,8 +75,6 @@ class View extends Component {
       })
     })
     .catch(err => console.log('err:', err))
-
-
   }
 
   validateAddress = (address) => {

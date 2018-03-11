@@ -5,6 +5,9 @@ import styled from 'styled-components'
 import Address from './Address'
 import AddSvg from '../icons/Add'
 import colors from '../styles/colors'
+import {
+  BaseButtonBlue,
+} from '../components/TopLevelComponents'
 
 const Container = styled.div`
   flex: 1 0;
@@ -17,26 +20,11 @@ const AddressesContainer = styled.div`
   border: 1px solid ${colors.address_bg_dark};
   border-bottom: none;
 `
-const AddButton = styled.div`
-  background-color: ${
-    props => {
-      return props.disabled ?
-      colors.button_disabled_bg :
-      colors.button_background
-    }
-  };
+const AddButton = BaseButtonBlue.extend`
   height: 50px;
   font-size: 1.2em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
   border-radius: 0 0 5px 5px;
-  cursor: pointer;
-  &:hover {
-    background-color: #326E9C;
-  }
-  ${'' /* border: solid 1px ${colors.button_stroke}; */}
+  width: 100%;
 `
 
 class AddressesPane extends React.Component {

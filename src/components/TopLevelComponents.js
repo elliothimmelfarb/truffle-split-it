@@ -34,16 +34,15 @@ export const PageTitle = styled.div`
   height: 100%;
   color: white;
 `
-export const StandaloneButton = styled.div`
+export const BaseButtonBlue = styled.div`
   display: flex;
   align-items: center;
   align-self: center;
   justify-content: center;
   color: ${colors.button_content};
   border: solid 1px ${colors.button_stroke};
-  border-radius: 5px;
-  font-size: .9em;
   cursor: pointer;
+  border-radius: 5px;
   background-color: ${
     props => props.disabled ?
     colors.button_disabled_bg :

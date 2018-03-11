@@ -10,14 +10,15 @@ import {
   PaddingContainer,
   TopArea,
   PageTitle,
-  StandaloneButton,
+  BaseButtonBlue,
   ContentArea,
   NotConnectedPane,
 } from '../components/TopLevelComponents'
 
-const PublishButton = StandaloneButton.extend`
+const PublishButton = BaseButtonBlue.extend`
   width: 20%;
   height: 60%;
+  font-size: .9em;
 `
 
 class Create extends Component {
