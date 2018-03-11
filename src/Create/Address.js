@@ -15,7 +15,7 @@ import {
   InputConfirmButton,
   LockedInput,
   LockedInputText,
-} from '../components/AddressComponents'
+} from '../components/AddressInputComponents'
 
 const LockedInputButton = styled.div`
   display: flex;

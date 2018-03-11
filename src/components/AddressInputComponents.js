@@ -12,7 +12,6 @@ export const AddressContainer = styled.div`
     props => props.isdark ? `${colors.address_bg_dark}` : `${colors.address_bg_light}`
   };
 `
-
 export const AddressInnerContainer = styled.div`
   height: 100%;
   align-items: center;
@@ -21,21 +20,18 @@ export const AddressInnerContainer = styled.div`
   justify-content: space-around;
   width: 100%;
 `
-
 export const InputContainer = styled.div`
   flex: 5 0;
   display: flex;
   align-items: center;
   height: 100%;
 `
-
 export const ButtonContainer = styled.div`
   flex: 1 0;
   display: flex;
   height: 60%;
   align-items: center;
 `
-
 export const Input = styled.input`
   width: 100%;
   height: 60%;
@@ -48,7 +44,6 @@ export const Input = styled.input`
     'green' : 'red'
   };
 `
-
 export const InputConfirmButton = styled.div`
   display: flex;
   flex: 1 0;
@@ -67,7 +62,6 @@ export const InputConfirmButton = styled.div`
     background-color: #326E9C;
   }
 `
-
 export const LockedInput = styled.div`
   display: flex;
   flex: 5 0;
@@ -77,7 +71,6 @@ export const LockedInput = styled.div`
   font-size: 13px;
   padding-left: 5px;
 `
-
 export const LockedInputText = styled.div`
   text-overflow: ellipsis;
   overflow: hidden;

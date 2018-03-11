@@ -7,50 +7,24 @@ import AddressSearch from './AddressSearch'
 import ViewAddressesPane from './ViewAddressesPane'
 import SplitIt from '../../build/contracts/SplitIt.json'
 
-const Container = styled.div`
-  display: flex;
-  flex: 1 0;
-  flex-direction: column;
-  align-items: center;
-`
-const PaddingContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 95%;
-  flex: 1 0;
-  align-items: center;
-  justify-content: center;
-`
-const NotConnectedPane = styled.div`
-  height: 70px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: red;
-`
+import {
+  Container,
+  PaddingContainer,
+  NotConnectedPane,
+  PageTitle,
+  ContentArea,
+} from '../components/TopLevelComponents'
+
 const TitleContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   flex: 1 0;
   width: 100%;
 `
-const Title = styled.div`
-  display: flex;
+const Title = PageTitle.extend`
   font-size: 1.4em;
-  font-weight: 600;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-  justify-content: space-between;
-  color: white;
 `
-const ViewArea = styled.div`
-  display: flex;
-  flex: 12 0;
-  width: 100%;
-  border: 1px solid red;
-`
+
 class View extends Component {
   static propTypes = {
     web3: PropTypes.object,
@@ -141,11 +115,11 @@ class View extends Component {
             handleSearch={this.handleSearch}
             validateAddress={this.validateAddress}
           />
-          <ViewArea>
+          <ContentArea>
             <ViewAddressesPane
               addressList={this.state.addressList}
             />
-          </ViewArea>
+          </ContentArea>
         </PaddingContainer>
       </Container>
     );

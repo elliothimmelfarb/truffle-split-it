@@ -18,7 +18,7 @@ export const PaddingContainer = styled.div`
 export const TopArea = styled.div`
   display: flex;
   width: 100%;
-  flex: 1 0;
+  flex: 1 1;
   font-size: 1.2em;
   flex-direction: row;
   align-items: center;
