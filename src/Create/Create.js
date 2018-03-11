@@ -1,98 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
 import shortid from 'shortid'
 import contract from 'truffle-contract'
 
 import AddressesPane from './AddressesPane'
-import colors from '../styles/colors'
 import SplitItCreator from '../../build/contracts/SplitItCreator.json'
+import {
+  Container,
+  PaddingContainer,
+  TopArea,
+  PageTitle,
+  StandaloneButton,
+  ContentArea,
+  NotConnectedPane,
+} from '../components/TopLevelComponents'
 
-const Container = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: center;
-`
-const PaddingContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 95%;
-  display: flex;
-`
-const TopArea = styled.div`
-  display: flex;
-  width: 100%;
-  flex: 1 0;
-  font-size: 1.2em;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-`
-const AddressesArea = styled.div`
-  flex: 12 0;
-  display: flex;
-  width: 100%;
-  border-radius: 5px;
-  overflow: hidden;
-  color: ${colors.default_text};
-`
-const PublishButton = styled.div`
-  display: flex;
-  align-items: center;
-  align-self: center;
-  justify-content: center;
+const PublishButton = StandaloneButton.extend`
   width: 20%;
   height: 60%;
-  background-color: ${
-    props => props.disabled ?
-    colors.button_disabled_bg :
-    colors.button_background
-  };
-  color: ${colors.button_content};
-  border: solid 1px ${colors.button_stroke};
-  border-radius: 5px;
-  font-size: .9em;
-  cursor: pointer;
-  ${'' /* target devices with no hover */}
-  @media (hover:none) {
-    &:active {
-      background-color: ${
-        props => props.disabled ?
-        colors.button_disabled_bg :
-        '#326E9C'
-      };
-    }
-  }
-  ${'' /* target devices with hover */}
-  @media (hover:hover) {
-    &:hover {
-      background-color: ${
-        props => props.disabled ?
-        colors.button_disabled_bg :
-        '#326E9C'
-      };
-    }
-  }
-}
-`
-const Title = styled.div`
-  display: flex;
-  font-size: 1.15em;
-  font-weight: 600;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  height: 100%;
-  color: white;
-`
-const NotConnectedPane = styled.div`
-  height: 70px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: red;
 `
 
 class Create extends Component {
@@ -196,7 +121,7 @@ class Create extends Component {
               ''
           }
           <TopArea>
-            <Title>Create Split It Contract</Title>
+            <PageTitle>Create Split It Contract</PageTitle>
             <PublishButton
               disabled={ !this.props.isConnected }
               onClick={ this.handlePublish }
@@ -204,7 +129,7 @@ class Create extends Component {
               Publish
             </PublishButton>
           </TopArea>
-          <AddressesArea>
+          <ContentArea>
             <AddressesPane
               addresses={ this.state.addresses }
               addAddress={ this.handleAddAddress }
@@ -212,7 +137,7 @@ class Create extends Component {
               handleDelete={ this.handleDelete }
               validateAddress={ this.validateAddress }
             />
-          </AddressesArea>
+          </ContentArea>
         </PaddingContainer>
       </Container>
     );
