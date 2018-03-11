@@ -4,6 +4,18 @@ body {
   font-family: Roboto, sans-serif;
 }
 
+#background {
+  background-color: #2A2A2A !important;
+  display: flex;
+  justify-content: center;
+}
+
+#root {
+  display: flex;
+  flex: 1 0;
+  max-width: 1000px;
+}
+
 @font-face {
   font-family: 'Roboto';
   src: local('Roboto'), url(./fonts/Roboto-Regular.tff') format('truetype');

@@ -14,20 +14,16 @@ import {
   ButtonContainer,
   InputConfirmButton,
 } from '../components/AddressInputComponents'
+import { BaseButtonBlue } from '../components/TopLevelComponents'
 
 const Container = AddressContainer.extend`
   background-color: transparent;
+  flex: 1 0;
 `
 
-const EditButton = styled.div`
-  display: flex;
+const EditButton = BaseButtonBlue.extend`
   flex: 1 0;
   height: 100%;
-  align-items: center;
-  justify-content: center;
-  background-color: ${colors.button_background};
-  border: 1px solid ${colors.button_stroke};
-  border-radius: 5px;
 `
 
 class AddressSearch extends React.Component {

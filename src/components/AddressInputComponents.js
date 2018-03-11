@@ -7,17 +7,19 @@ export const AddressContainer = styled.div`
   height: 65px;
   width: 100%;
   align-items: center;
+  justify-content: center;
   background-color: ${
     props => props.isdark ? `${colors.address_bg_dark}` : `${colors.address_bg_light}`
   };
 `
 export const AddressInnerContainer = styled.div`
+  display: flex;
+  flex: 1 0;
+  max-width: 98%;
   height: 100%;
   align-items: center;
-  display: flex;
   margin: 5px;
   justify-content: space-around;
-  width: 100%;
 `
 export const InputContainer = styled.div`
   flex: 5 0;
@@ -32,8 +34,8 @@ export const ButtonContainer = styled.div`
   align-items: center;
 `
 export const Input = styled.input`
-  width: 100%;
   height: 60%;
+  flex: 1 0;
   font-size: 13px;
   border-radius: 5px 0 0 5px;
   padding: 0 5px;
@@ -64,6 +66,7 @@ export const InputConfirmButton = styled.div`
 export const LockedInput = styled.div`
   display: flex;
   flex: 5 0;
+  max-width: 80%;
   height: 80%;
   align-items: center;
   color: ${colors.default_text};

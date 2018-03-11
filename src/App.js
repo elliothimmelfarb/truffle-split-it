@@ -14,6 +14,7 @@ import colors from './styles/colors'
 
 const AppContainer = styled.div`
   display: flex;
+  flex: 1 0;
   flex-direction: column;
   height: 100vh;
   background-color: ${colors.container};

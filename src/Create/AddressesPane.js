@@ -24,6 +24,7 @@ const AddButton = BaseButtonBlue.extend`
   height: 50px;
   font-size: 1.2em;
   border-radius: 0 0 5px 5px;
+  border-top: none;
   width: 100%;
 `
 
