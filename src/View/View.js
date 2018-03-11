@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import contract from 'truffle-contract';
 
+import SplitIt from '../utils/splitit'
 import AddressSearch from './AddressSearch'
 import ViewAddressesPane from './ViewAddressesPane'
-import SplitIt from '../../build/contracts/SplitIt.json'
 import {
   Container,
   PaddingContainer,
@@ -26,7 +24,7 @@ const TransparentContainer = AddressContainer.extend`
   background-color: transparent;
 `
 const DepositButton = BaseButtonBlue.extend`
-  padding: 5px;
+  padding: 10px;
 `
 
 class View extends Component {
@@ -49,36 +47,28 @@ class View extends Component {
       targetContractAddress: '',
       addressList: [],
     }
+
   }
 
   handleSearch = (targetAddress) => {
-    const { web3, currentAccount } = this.props
 
     this.setState({
       isSearching: true,
     })
 
-    const splitIt = contract(SplitIt)
-    splitIt.setProvider(web3.currentProvider)
+    const { web3, currentAccount } = this.props
 
-    const instance = splitIt.at(targetAddress)
+    const splitit = new SplitIt(web3, currentAccount)
 
-    instance.numberOfReceivingAddresses.call({from: currentAccount})
-    .then(async res => {
-      const count = Number(res)
-      const addressList = []
-      for (let i = 0; i < count; i += 1) {
-        const address = await instance.receivingAddresses.call(i, {from: currentAccount})
-        addressList.push(address)
-      }
+    splitit.search(targetAddress)
+    .then((addressList) => {
       this.setState({
         addressList,
         isSearching: false,
         searchSuccessful: true,
         targetContractAddress: targetAddress,
       })
-    })
-    .catch(err => console.log('err:', err))
+    }).catch(err => console.log('err:', err))
   }
 
   validateAddress = (address) => {
