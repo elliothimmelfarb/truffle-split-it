@@ -76,7 +76,7 @@ export const NotConnectedPane = styled.div`
   background-color: red;
 `
 export const ContentArea = styled.div`
-  flex: 12 0;
+  flex: 12 1;
   display: flex;
   width: 100%;
   border-radius: 5px;

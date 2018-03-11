@@ -68,7 +68,7 @@ export const InputConfirmButton = styled.div`
 export const LockedInput = styled.div`
   display: flex;
   flex: 5 0;
-  max-width: 75vw;
+  max-width: 70vw;
   height: 80%;
   align-items: center;
   color: ${colors.default_text};

@@ -6,31 +6,34 @@ import Address from './Address'
 
 const Container = styled.div`
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: stretch;
-  flex: 1 0;
-  border: 1px solid blue;
+`
+const InnerContainer = styled.div`
   border-radius: 5px;
+  overflow: hidden;
 `
 
 class ViewAddressesPane extends React.Component {
   static propTypes = {
     addressList: PropTypes.array.isRequired,
+    currentAccount: PropTypes.string.isRequired,
   }
 
   renderAddresses = () =>
-    this.props.addressList.map(addr =>
-      <Address
+    this.props.addressList.map((addr, i) => {
+      return <Address
         address={addr}
         key={addr}
+        isDark={i % 2 === 0}
+        isMe={addr.toLowerCase() === this.props.currentAccount.toLowerCase()}
       />
-    )
+    })
 
   render() {
     return (
       <Container>
-        { this.renderAddresses() }
+        <InnerContainer>
+          { this.renderAddresses() }
+        </InnerContainer>
       </Container>
     )
   }
