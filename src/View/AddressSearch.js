@@ -71,27 +71,27 @@ class AddressSearch extends React.Component {
         <AddressInnerContainer>
           <InputContainer>
             {
-              this.props.isSearching || this.state.addressLocked ?
-                <LockedInput>
-                  <LockedInputText>
-                    {this.state.targetAddress}
-                  </LockedInputText>
-                </LockedInput> :
-                <Input
-                  placeholder="Address of Existing Split It Contract"
-                  value={this.state.targetAddress}
-                  onChange={ this.handleChange }
-                  isvalid={ isValid }
-                  isempty={ targetAddress.length < 1 }
-                />
+              // this.props.isSearching || this.state.addressLocked ?
+              // <LockedInput>
+              //   <LockedInputText>
+              //     {this.state.targetAddress}
+              //   </LockedInputText>
+              // </LockedInput> :
+              <Input
+                placeholder="Address of Existing Split It Contract"
+                value={this.state.targetAddress}
+                onChange={ this.handleChange }
+                isvalid={ isValid }
+                isempty={ targetAddress.length < 1 }
+              />
             }
           </InputContainer>
           <ButtonContainer>
             {
-              this.state.addressLocked ?
-                <EditButton onClick={() => this.setState({addressLocked: false})}>
-                  <EditSvg />
-                </EditButton> :
+              // this.state.addressLocked ?
+              //   <EditButton onClick={() => this.setState({addressLocked: false})}>
+              //     <EditSvg />
+              //   </EditButton> :
                 <InputConfirmButton
                   onClick={() => isValid ? this.handleSearch() : ''}
                   isvalid={ isValid }
