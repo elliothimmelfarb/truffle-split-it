@@ -12,8 +12,6 @@ import {
   BaseButtonBlue
 } from '../components/TopLevelComponents'
 
-const NewButtonContainer = ButtonContainer.extend`
-`
 const WithdrawButton = BaseButtonBlue.extend`
   padding: 5px;
 `
@@ -40,13 +38,13 @@ class Address extends React.Component {
               { this.props.address }
             </LockedInputText>
           </LockedInput>
-          <NewButtonContainer>
+          <ButtonContainer>
             {
               this.props.isMe ?
                 <WithdrawButton>Withdraw</WithdrawButton> :
                 ''
             }
-          </NewButtonContainer>
+          </ButtonContainer>
         </AddressInnerContainer>
       </AddressContainer>
     )
