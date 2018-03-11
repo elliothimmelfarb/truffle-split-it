@@ -6,6 +6,7 @@ export const AddressContainer = styled.div`
   display: flex;
   height: 65px;
   width: 100%;
+  max-width: 100vw;
   align-items: center;
   justify-content: center;
   background-color: ${
