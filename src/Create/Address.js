@@ -6,102 +6,38 @@ import DeleteSvg from '../icons/Delete'
 import EditSvg from '../icons/Edit'
 import colors from '../styles/colors'
 
+import {
+  AddressContainer,
+  AddressInnerContainer,
+  InputContainer,
+  ButtonContainer,
+  Input,
+  InputConfirmButton,
+  LockedInput,
+  LockedInputText,
+} from '../components/AddressInputComponents'
 
-const Container = styled.div`
-  display: flex;
-  height: 65px;
-  width: 100%;
-  align-items: center;
-  background-color: ${
-    props => props.isdark ? `${colors.address_bg_dark}` : `${colors.address_bg_light}`
-  };
-`
-const InnerContainer = styled.div`
-  height: 100%;
-  align-items: center;
-  display: flex;
-  margin: 5px;
-  justify-content: space-around;
-  width: 100%;
-`
-const InputContainer = styled.div`
-  flex: 5 0;
-  display: flex;
-  align-items: center;
-  height: 100%;
-`
-const Input = styled.input`
-  width: 100%;
-  height: 60%;
-  font-size: 13px;
-  border-radius: 5px 0 0 5px;
-  padding: 0 5px;
-  border: 1px solid ${props => props.isempty ? 'grey' : props.isvalid ? 'green' : 'red'};
-`
-const ButtonContainer = styled.div`
-  flex: 1 0;
-  display: flex;
-  height: 60%;
-  align-items: center;
-`
-const SaveButton = styled.div`
+const LockedInputButton = styled.div`
   display: flex;
   flex: 1 0;
   height: 100%;
-  text-align: center;
-  background-color: ${props => props.isvalid ? colors.button_background : colors.button_disabled_bg};
+  align-items: center;
   justify-content: center;
-  align-items: center;
-  border-radius: 0 5px 5px 0;
-  border: 1px solid ${colors.button_stroke};
-  border-left: none;
-  padding: 0 10px;
-  color: ${colors.button_content};
+  border-radius: 5px;
   cursor: pointer;
-  &:hover {
-    background-color: #326E9C;
-  }
 `
-const LockedInput = styled.div`
-  display: flex;
-  width: 75vw;
-  height: 80%;
-  align-items: center;
-  color: ${colors.default_text};
-  font-size: 13px;
-  padding-left: 5px;
-`
-const LockedInputText = styled.div`
-  text-overflow: ellipsis;
-  overflow: hidden;
-  color: grey;
-  font-size: 1.2em;
-`
-const EditButton = styled.div`
-  display: flex;
-  flex: 1 0;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
+
+const EditButton = LockedInputButton.extend`
   background-color: ${colors.button_background};
   border: 1px solid ${colors.button_stroke};
-  border-radius: 5px;
   margin-right: 5px;
-  cursor: pointer;
   &:hover {
     background-color: #326E9C;
   }
 `
-const DeleteButton = styled.div`
-  display: flex;
-  flex: 1 0;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
+const DeleteButton = LockedInputButton.extend`
   background-color: ${colors.delete_button_background};
   border: 1px solid ${colors.delete_button_stroke};
-  border-radius: 5px;
-  cursor: pointer;
   &:hover {
     background-color: #690800;
   }
@@ -151,8 +87,8 @@ class Address extends React.Component {
     const { isValid } = this.state
     if (this.state.editing) {
       return (
-        <Container isdark={ this.props.isDark }>
-          <InnerContainer>
+        <AddressContainer isdark={ this.props.isDark }>
+          <AddressInnerContainer>
             <InputContainer>
               <Input
                 defaultValue={ this.state.value }
@@ -164,20 +100,20 @@ class Address extends React.Component {
               />
             </InputContainer>
             <ButtonContainer>
-              <SaveButton
+              <InputConfirmButton
                 onClick={ () => isValid ? this.handleSave() : '' }
                 isvalid={ isValid }
               >
                 Save
-              </SaveButton>
+              </InputConfirmButton>
             </ButtonContainer>
-          </InnerContainer>
-        </Container>
+          </AddressInnerContainer>
+        </AddressContainer>
       )
     }
     return (
-      <Container isdark={ this.props.isDark }>
-        <InnerContainer>
+      <AddressContainer isdark={ this.props.isDark }>
+        <AddressInnerContainer>
           <LockedInput>
             <LockedInputText>{ this.props.value }</LockedInputText>
           </LockedInput>
@@ -193,8 +129,8 @@ class Address extends React.Component {
               <DeleteSvg />
             </DeleteButton>
           </ButtonContainer>
-        </InnerContainer>
-      </Container>
+        </AddressInnerContainer>
+      </AddressContainer>
     )
   }
 }

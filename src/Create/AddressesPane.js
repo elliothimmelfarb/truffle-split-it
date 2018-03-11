@@ -5,6 +5,9 @@ import styled from 'styled-components'
 import Address from './Address'
 import AddSvg from '../icons/Add'
 import colors from '../styles/colors'
+import {
+  BaseButtonBlue,
+} from '../components/TopLevelComponents'
 
 const Container = styled.div`
   flex: 1 0;
@@ -13,30 +16,16 @@ const Container = styled.div`
   flex-direction: column;
   border-radius: 5px;
 `
-const AddressesContainer = styled.div`
+const InnerContainer = styled.div`
   border: 1px solid ${colors.address_bg_dark};
   border-bottom: none;
 `
-const AddButton = styled.div`
-  background-color: ${
-    props => {
-      return props.disabled ?
-      colors.button_disabled_bg :
-      colors.button_background
-    }
-  };
+const AddButton = BaseButtonBlue.extend`
   height: 50px;
   font-size: 1.2em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
   border-radius: 0 0 5px 5px;
-  cursor: pointer;
-  &:hover {
-    background-color: #326E9C;
-  }
-  ${'' /* border: solid 1px ${colors.button_stroke}; */}
+  border-top: none;
+  width: 100%;
 `
 
 class AddressesPane extends React.Component {
@@ -72,9 +61,9 @@ class AddressesPane extends React.Component {
     const addressCount = Object.keys(addresses).length
     return (
       <Container>
-        <AddressesContainer>
+        <InnerContainer>
           { this.renderAddresses() }
-        </AddressesContainer>
+        </InnerContainer>
         <AddButton
           onClick={ addAddress }
           disabled={ addressCount > 9 }
