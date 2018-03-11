@@ -17,6 +17,7 @@ export const AddressInnerContainer = styled.div`
   display: flex;
   flex: 1 0;
   max-width: 98%;
+  max-width: 100vw;
   height: 100%;
   align-items: center;
   margin: 5px;
@@ -67,7 +68,7 @@ export const InputConfirmButton = styled.div`
 export const LockedInput = styled.div`
   display: flex;
   flex: 5 0;
-  max-width: 80%;
+  max-width: 75vw;
   height: 80%;
   align-items: center;
   color: ${colors.default_text};
