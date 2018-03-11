@@ -51,11 +51,14 @@ class View extends Component {
   }
 
   handleSearch = (targetAddress) => {
+
     this.setState({
       isSearching: true,
     })
 
-    const splitit = new SplitIt(this.props.web3, this.props.currentAccount)
+    const { web3, currentAccount } = this.props
+
+    const splitit = new SplitIt(web3, currentAccount)
 
     splitit.search(targetAddress)
     .then((addressList) => {
