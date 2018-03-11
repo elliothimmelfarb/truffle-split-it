@@ -34,6 +34,7 @@ export const ButtonContainer = styled.div`
   display: flex;
   height: 60%;
   align-items: center;
+  justify-content: flex-end;
 `
 export const Input = styled.input`
   height: 60%;

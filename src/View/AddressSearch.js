@@ -1,27 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import EditSvg from '../icons/Edit'
 import {
   AddressContainer,
   AddressInnerContainer,
   InputContainer,
   Input,
-  LockedInput,
-  LockedInputText,
   ButtonContainer,
   InputConfirmButton,
 } from '../components/AddressInputComponents'
-import { BaseButtonBlue } from '../components/TopLevelComponents'
 
 const Container = AddressContainer.extend`
   background-color: transparent;
   flex: 1 0;
-`
-
-const EditButton = BaseButtonBlue.extend`
-  flex: 1 0;
-  height: 100%;
 `
 
 class AddressSearch extends React.Component {
@@ -71,33 +62,23 @@ class AddressSearch extends React.Component {
         <AddressInnerContainer>
           <InputContainer>
             {
-              this.props.isSearching || this.state.addressLocked ?
-                <LockedInput>
-                  <LockedInputText>
-                    {this.state.targetAddress}
-                  </LockedInputText>
-                </LockedInput> :
-                <Input
-                  placeholder="Address of Existing Split It Contract"
-                  value={this.state.targetAddress}
-                  onChange={ this.handleChange }
-                  isvalid={ isValid }
-                  isempty={ targetAddress.length < 1 }
-                />
+              <Input
+                placeholder="Address of Existing Split It Contract"
+                value={this.state.targetAddress}
+                onChange={ this.handleChange }
+                isvalid={ isValid }
+                isempty={ targetAddress.length < 1 }
+              />
             }
           </InputContainer>
           <ButtonContainer>
             {
-              this.state.addressLocked ?
-                <EditButton onClick={() => this.setState({addressLocked: false})}>
-                  <EditSvg />
-                </EditButton> :
-                <InputConfirmButton
-                  onClick={() => isValid ? this.handleSearch() : ''}
-                  isvalid={ isValid }
-                >
-                  Search
-                </InputConfirmButton>
+              <InputConfirmButton
+                onClick={() => isValid ? this.handleSearch() : ''}
+                isvalid={ isValid }
+              >
+                Search
+              </InputConfirmButton>
             }
           </ButtonContainer>
         </AddressInnerContainer>

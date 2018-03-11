@@ -10,18 +10,23 @@ import {
   Container,
   PaddingContainer,
   NotConnectedPane,
-  PageTitle,
   ContentArea,
+  BaseButtonBlue,
 } from '../components/TopLevelComponents'
+import {
+  AddressContainer,
+  AddressInnerContainer,
+  InputContainer,
+  LockedInput,
+  LockedInputText,
+  ButtonContainer,
+} from '../components/AddressInputComponents'
 
-const TitleContainer = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  flex: 1 0;
-  width: 100%;
+const TransparentContainer = AddressContainer.extend`
+  background-color: transparent;
 `
-const Title = PageTitle.extend`
-  font-size: 1.4em;
+const DepositButton = BaseButtonBlue.extend`
+  padding: 5px;
 `
 
 class View extends Component {
@@ -102,15 +107,32 @@ class View extends Component {
                 Not Connected to the Ethereum Network
               </NotConnectedPane> : ''
           }
-          <TitleContainer>
-            <Title>View Split It Contract</Title>
-          </TitleContainer>
           <AddressSearch
             isSearching={this.state.isSearching}
             searchSuccessful={this.state.searchSuccessful}
             handleSearch={this.handleSearch}
             validateAddress={this.validateAddress}
           />
+          {
+            this.state.searchSuccessful ?
+              <TransparentContainer>
+                <AddressInnerContainer>
+                  <InputContainer>
+                    <LockedInput>
+                      <LockedInputText>
+                        {this.state.targetContractAddress}
+                      </LockedInputText>
+                    </LockedInput>
+                  </InputContainer>
+                  <ButtonContainer>
+                    <DepositButton>
+                      Deposit
+                    </DepositButton>
+                  </ButtonContainer>
+                </AddressInnerContainer>
+              </TransparentContainer> :
+              ''
+              }
           <ContentArea>
             <ViewAddressesPane
               addressList={this.state.addressList}
