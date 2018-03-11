@@ -4,7 +4,7 @@ import shortid from 'shortid'
 import contract from 'truffle-contract'
 
 import AddressesPane from './AddressesPane'
-import SplitItCreator from '../../build/contracts/SplitItCreator.json'
+import SplitIt from '../utils/splitit'
 import {
   Container,
   PaddingContainer,
@@ -62,24 +62,18 @@ class Create extends Component {
 
   handlePublish = () => {
     const { web3, currentAccount } = this.props
+    
     let { addresses } = this.state
-
     addresses = Object.keys(addresses).map(id =>
       addresses[id].address
     )
 
-    const splitItCreator = contract(SplitItCreator)
-    splitItCreator.setProvider(web3.currentProvider)
+    const splitit = new SplitIt(web3, currentAccount)
 
-    splitItCreator.deployed().then((instance) => {
-      instance.createSplitIt(addresses, {from: currentAccount})
-      .then(res => {
-        console.log(res)
-        const newAddress = res.logs[0].args.contractAddress
-        alert(`Your new SplitIt contract address is: ${newAddress} (copy and save it!)`)
-      })
-      .catch(err => console.log(err))
-    })
+    splitit.publish(addresses)
+    .then(newAddress => {
+      alert(`Your new SplitIt contract address is: ${newAddress} (copy and save it!)`)
+    }).catch(err => console.log(err))
   }
 
   saveAddress = (id, newAddr) => {

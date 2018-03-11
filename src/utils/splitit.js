@@ -1,5 +1,6 @@
 import contract from 'truffle-contract'
 import SplitIt from '../../build/contracts/SplitIt.json'
+import SplitItCreator from '../../build/contracts/SplitItCreator.json'
 
 
 class Splitit {
@@ -8,12 +9,28 @@ class Splitit {
     this.currentAccount = currentAccount
     this.splitIt = contract(SplitIt)
     this.splitIt.setProvider(web3.currentProvider)
+    this.splitItCreator = contract(SplitItCreator)
+    this.splitItCreator.setProvider(web3.currentProvider)
   }
 
   deposit = (targetAddress) => {
     return new Promise((resolve, reject) => {
       const instance = this.splitIt.at(targetAddress)
 
+    })
+  }
+
+  publish = (addresses) => {
+    return new Promise((resolve, reject) => {
+      this.splitItCreator.deployed().then((instance) => {
+        instance.createSplitIt(addresses, {from: this.currentAccount})
+        .then(res => {
+          console.log(res)
+          const newAddress = res.logs[0].args.contractAddress
+          resolve(newAddress)
+        })
+        .catch(err => console.log(err))
+      })
     })
   }
 

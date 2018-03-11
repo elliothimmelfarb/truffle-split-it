@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import contract from 'truffle-contract';
 
 import SplitIt from '../utils/splitit'
 import AddressSearch from './AddressSearch'
@@ -55,8 +54,6 @@ class View extends Component {
     this.setState({
       isSearching: true,
     })
-
-    const component = this
 
     const splitit = new SplitIt(this.props.web3, this.props.currentAccount)
 
