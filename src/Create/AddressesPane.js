@@ -16,7 +16,7 @@ const Container = styled.div`
   flex-direction: column;
   border-radius: 5px;
 `
-const AddressesContainer = styled.div`
+const InnerContainer = styled.div`
   border: 1px solid ${colors.address_bg_dark};
   border-bottom: none;
 `
@@ -60,9 +60,9 @@ class AddressesPane extends React.Component {
     const addressCount = Object.keys(addresses).length
     return (
       <Container>
-        <AddressesContainer>
+        <InnerContainer>
           { this.renderAddresses() }
-        </AddressesContainer>
+        </InnerContainer>
         <AddButton
           onClick={ addAddress }
           disabled={ addressCount > 9 }

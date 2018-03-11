@@ -4,67 +4,21 @@ import styled from 'styled-components'
 
 import colors from '../styles/colors'
 import EditSvg from '../icons/Edit'
+import {
+  AddressContainer,
+  AddressInnerContainer,
+  InputContainer,
+  Input,
+  LockedInput,
+  LockedInputText,
+  ButtonContainer,
+  InputConfirmButton,
+} from '../components/AddressInputComponents'
 
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  flex: 1 0;
-  justify-content: center;
+const Container = AddressContainer.extend`
+  background-color: transparent;
 `
-const PaddingContainer = styled.div`
-  height: 80%;
-  width: 100%;
-  display: flex;
-`
-const InputContainer = styled.div`
-  flex: 4 0;
-  height: 100%;
-  display: flex;
-`
-const Input = styled.input`
-  width: 100%;
-  font-size: 13px;
-  border-radius: 5px 0 0 5px;
-  height: 100%;
-  padding: 0 5px;
-  border: 1px solid ${props => props.isempty ? 'grey' : props.isvalid ? 'green' : 'red'};
-`
-const LockedInput = styled.div`
-  display: flex;
-  width: 80vw;
-  height: 100%;
-  align-items: center;
-  color: ${colors.default_text};
-  font-size: 13px;
-`
-const LockedInputText = styled.div`
-  text-overflow: ellipsis;
-  overflow: hidden;
-  color: grey;
-  font-size: 1.2em;
-`
-const InputButtonContainer = styled.div`
-  display: flex;
-  flex: 1 0;
-  height: 100%;
-`
-const SearchButton = styled.div`
-  display: flex;
-  flex: 1 0;
-  height: 100%;
-  text-align: center;
-  background-color: ${props => props.isvalid ? colors.button_background : colors.button_disabled_bg};
-  justify-content: center;
-  align-items: center;
-  border-radius: 0 5px 5px 0;
-  border: 1px solid ${colors.button_stroke};
-  border-left: none;
-  color: ${colors.button_content};
-  cursor: pointer;
-  &:hover {
-    background-color: #326E9C;
-  }
-`
+
 const EditButton = styled.div`
   display: flex;
   flex: 1 0;
@@ -120,7 +74,7 @@ class AddressSearch extends React.Component {
     const {isValid, targetAddress} = this.state
     return (
       <Container>
-        <PaddingContainer>
+        <AddressInnerContainer>
           <InputContainer>
             {
               this.props.isSearching || this.state.addressLocked ?
@@ -138,21 +92,21 @@ class AddressSearch extends React.Component {
                 />
             }
           </InputContainer>
-          <InputButtonContainer>
+          <ButtonContainer>
             {
               this.state.addressLocked ?
                 <EditButton onClick={() => this.setState({addressLocked: false})}>
                   <EditSvg />
                 </EditButton> :
-                <SearchButton
+                <InputConfirmButton
                   onClick={() => isValid ? this.handleSearch() : ''}
                   isvalid={ isValid }
                 >
                   Search
-                </SearchButton>
+                </InputConfirmButton>
             }
-          </InputButtonContainer>
-        </PaddingContainer>
+          </ButtonContainer>
+        </AddressInnerContainer>
       </Container>
     )
   }
