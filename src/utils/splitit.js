@@ -13,10 +13,14 @@ class Splitit {
     this.splitItCreator.setProvider(web3.currentProvider)
   }
 
-  deposit = (targetAddress) => {
+  deposit = (targetAddress, amount) => {
     return new Promise((resolve, reject) => {
       const instance = this.splitIt.at(targetAddress)
-
+      instance.send(this.web3.utils.toWei(amount.toString(), "ether"))
+      .then(res => {
+        console.log(res)
+        resolve()
+      })
     })
   }
 
