@@ -37,7 +37,18 @@ class Splitit {
 
   publish = (addresses) => {
     return new Promise((resolve, reject) => {
-      this.splitItCreator.deployed().then((instance) => {
+      if (process.env.NODE_ENV === 'development') {
+        this.splitItCreator.deployed().then((instance) => {
+          instance.createSplitIt(addresses, {from: this.currentAccount})
+          .then(res => {
+            console.log(res)
+            const newAddress = res.logs[0].args.contractAddress
+            resolve(newAddress)
+          })
+          .catch(err => console.log(err))
+        })
+      } else {
+        const instance = this.splitItCreator.at()
         instance.createSplitIt(addresses, {from: this.currentAccount})
         .then(res => {
           console.log(res)
@@ -45,7 +56,7 @@ class Splitit {
           resolve(newAddress)
         })
         .catch(err => console.log(err))
-      })
+      }
     })
   }
 
