@@ -67,11 +67,15 @@ Modal.setAppElement('#root');
 
 class DepositModal extends React.Component {
   static propTypes = {
-    modalIsOpen: PropTypes.bool.isRequired,
+    modalIsOpen: PropTypes.bool,
     closeModal: PropTypes.func.isRequired,
     targetAddress: PropTypes.string.isRequired,
     web3: PropTypes.object.isRequired,
     currentAccount: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    modalIsOpen: false,
   }
 
   constructor(props) {
