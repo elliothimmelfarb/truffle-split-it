@@ -22,6 +22,7 @@ class Address extends React.Component {
     address: PropTypes.string.isRequired,
     isMe: PropTypes.bool,
     isDark: PropTypes.bool,
+    handleWithdraw: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -41,7 +42,7 @@ class Address extends React.Component {
           <ButtonContainer>
             {
               this.props.isMe ?
-                <WithdrawButton>Withdraw</WithdrawButton> :
+                <WithdrawButton onClick={this.props.handleWithdraw}>Withdraw</WithdrawButton> :
                 ''
             }
           </ButtonContainer>

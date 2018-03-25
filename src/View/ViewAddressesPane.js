@@ -16,6 +16,7 @@ class ViewAddressesPane extends React.Component {
   static propTypes = {
     addressList: PropTypes.array.isRequired,
     currentAccount: PropTypes.string.isRequired,
+    handleWithdraw: PropTypes.func.isRequired,
   }
 
   renderAddresses = () =>
@@ -25,6 +26,7 @@ class ViewAddressesPane extends React.Component {
         key={addr}
         isDark={i % 2 === 0}
         isMe={addr.toLowerCase() === this.props.currentAccount.toLowerCase()}
+        handleWithdraw={this.props.handleWithdraw}
       />
     })
 

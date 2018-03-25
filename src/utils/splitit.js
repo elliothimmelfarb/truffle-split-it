@@ -13,10 +13,25 @@ class Splitit {
     this.splitItCreator.setProvider(web3.currentProvider)
   }
 
-  deposit = (targetAddress) => {
+  deposit = (targetAddress, amount) => {
     return new Promise((resolve, reject) => {
       const instance = this.splitIt.at(targetAddress)
+      instance.sendTransaction({
+        value: this.web3.utils.toWei(amount.toString(), 'ether'),
+        from: this.currentAccount,
+      }).then(res => {
+        resolve(res)
+      }).catch(err => reject(err))
+    })
+  }
 
+  withdraw = (targetAddress) => {
+    return new Promise((resolve, reject) => {
+      const instance = this.splitIt.at(targetAddress)
+      instance.withdraw({from: this.currentAccount})
+      .then(res => {
+        resolve(res)
+      }).catch(err => reject(err))
     })
   }
 

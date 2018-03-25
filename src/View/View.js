@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import SplitIt from '../utils/splitit'
 import AddressSearch from './AddressSearch'
 import ViewAddressesPane from './ViewAddressesPane'
+import DepositModal from './DepositModal'
 import {
   Container,
   PaddingContainer,
@@ -46,6 +47,7 @@ class View extends Component {
       isSearching: false,
       targetContractAddress: '',
       addressList: [],
+      depositModalOpen: false,
     }
 
   }
@@ -71,6 +73,14 @@ class View extends Component {
     }).catch(err => console.log('err:', err))
   }
 
+  handleDepositModalOpen = () => {
+    this.setState({depositModalIsOpen: true})
+  }
+
+  handleDepositModalClose = () => {
+    this.setState({depositModalIsOpen: false})
+  }
+
   validateAddress = (address) => {
     const {web3} = this.props
     return new Promise((resolve, reject) => {
@@ -83,6 +93,15 @@ class View extends Component {
       } else {
         reject()
       }
+    })
+  }
+
+  handleWithdraw = () => {
+    const {web3, currentAccount} = this.props
+    const splitit = new SplitIt(web3, currentAccount)
+    splitit.withdraw(this.state.targetContractAddress)
+    .then(res => {
+      console.log(res)
     })
   }
 
@@ -115,21 +134,31 @@ class View extends Component {
                     </LockedInput>
                   </InputContainer>
                   <ButtonContainer>
-                    <DepositButton>
+                    <DepositButton
+                      onClick={this.handleDepositModalOpen}
+                    >
                       Deposit
                     </DepositButton>
                   </ButtonContainer>
                 </AddressInnerContainer>
               </TransparentContainer> :
               ''
-              }
+          }
           <ContentArea>
             <ViewAddressesPane
               addressList={this.state.addressList}
               currentAccount={this.props.currentAccount}
+              handleWithdraw={this.handleWithdraw}
             />
           </ContentArea>
         </PaddingContainer>
+        <DepositModal
+          modalIsOpen={this.state.depositModalIsOpen}
+          closeModal={this.handleDepositModalClose}
+          targetAddress={this.state.targetContractAddress}
+          web3={this.props.web3}
+          currentAccount={this.props.currentAccount}
+        />
       </Container>
     );
   }
