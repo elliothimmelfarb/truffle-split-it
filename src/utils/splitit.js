@@ -48,7 +48,7 @@ class Splitit {
           .catch(err => console.log(err))
         })
       } else {
-        const instance = this.splitItCreator.at()
+        const instance = this.splitItCreator.at('0x7Ec92Ee4b0c22571F65A51575bAB62a4C43bBcEE')
         instance.createSplitIt(addresses, {from: this.currentAccount})
         .then(res => {
           console.log(res)
