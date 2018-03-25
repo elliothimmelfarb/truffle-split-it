@@ -14,9 +14,11 @@ class Splitit {
   }
 
   deposit = (targetAddress, amount) => {
+    console.log(targetAddress, amount)
     return new Promise((resolve, reject) => {
-      const instance = SplitIt.at(targetAddress)
-      instance.send(this.web3.utils.toWei(amount.toString(), "ether"), {from: this.currentAccount})
+      const instance = this.splitIt.at(targetAddress)
+      console.log(instance)
+      instance.sendTransaction({value: this.web3.utils.toWei(amount.toString(), 'ether'), from: this.currentAccount})
       .then(res => {
         console.log(res)
         resolve()
