@@ -96,6 +96,15 @@ class View extends Component {
     })
   }
 
+  handleWithdraw = () => {
+    const {web3, currentAccount} = this.props
+    const splitit = new SplitIt(web3, currentAccount)
+    splitit.withdraw(this.state.targetContractAddress)
+    .then(res => {
+      console.log(res)
+    })
+  }
+
   render() {
     console.log(this.state.addressList)
     return (
@@ -139,6 +148,7 @@ class View extends Component {
             <ViewAddressesPane
               addressList={this.state.addressList}
               currentAccount={this.props.currentAccount}
+              handleWithdraw={this.handleWithdraw}
             />
           </ContentArea>
         </PaddingContainer>

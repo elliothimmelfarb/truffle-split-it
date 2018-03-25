@@ -91,14 +91,11 @@ class DepositModal extends React.Component {
     const { web3, currentAccount, targetAddress } = this.props
     const { tipAmount, depositAmount } = this.state
     const amount = parseFloat(tipAmount) + parseFloat(depositAmount)
-    console.log(amount)
     const splitit = new SplitIt(web3, currentAccount)
     splitit.deposit(targetAddress, amount)
   }
 
   render() {
-    console.log('props', this.props)
-    console.log('state', this.state)
     return (
       <Modal
         isOpen={this.props.modalIsOpen}
