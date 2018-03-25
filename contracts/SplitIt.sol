@@ -58,7 +58,7 @@ contract SplitItCreator {
 
   function createSplitIt(address[] receivingAddresses) public {
     SplitIt splitIt = new SplitIt(receivingAddresses);
-    Creation(splitIt);
+    emit Creation(splitIt);
   }
 
 }
