@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components'
 import {
-  BrowserRouter as Router,
   Route,
   NavLink,
 } from 'react-router-dom'
 import getWeb3 from './utils/getWeb3'
-
 import About from './About/'
 import View from './View/'
 import Create from './Create/'
@@ -96,51 +94,49 @@ class App extends Component {
 
   render() {
     return (
-      <Router>
-        <AppContainer>
-          <Header>
-            <Title
+      <AppContainer>
+        <Header>
+          <Title
+            exact
+            to="/"
+          >
+            Split It
+          </Title>
+          <NavButtonContainer>
+            <NavButton
               exact
-              to="/"
+              to="/create"
+              activeStyle={ activeStyle }
             >
-              Split It
-            </Title>
-            <NavButtonContainer>
-              <NavButton
-                exact
-                to="/create"
-                activeStyle={ activeStyle }
-              >
-                Create
-              </NavButton>
-              <NavButton
-                exact
-                to="/view"
-                activeStyle={ activeStyle }
-              >
-                View
-              </NavButton>
-            </NavButtonContainer>
-          </Header>
-          <RoutesContainer>
-            <Route exact path="/" component={About}/>
-            <Route path="/create" render={() =>
-              <Create
-                web3={this.state.web3}
-                isConnected={this.state.isConnected}
-                currentAccount={this.state.currentAccount}
-              />
-            }/>
-            <Route path="/view" render={() =>
-              <View
-                web3={this.state.web3}
-                isConnected={this.state.isConnected}
-                currentAccount={this.state.currentAccount}
-              />
-            }/>
-          </RoutesContainer>
-        </AppContainer>
-      </Router>
+              Create
+            </NavButton>
+            <NavButton
+              exact
+              to="/view"
+              activeStyle={ activeStyle }
+            >
+              View
+            </NavButton>
+          </NavButtonContainer>
+        </Header>
+        <RoutesContainer>
+          <Route exact path="/" component={About}/>
+          <Route path="/create" render={() =>
+            <Create
+              web3={this.state.web3}
+              isConnected={this.state.isConnected}
+              currentAccount={this.state.currentAccount}
+            />
+          }/>
+          <Route path="/view" render={() =>
+            <View
+              web3={this.state.web3}
+              isConnected={this.state.isConnected}
+              currentAccount={this.state.currentAccount}
+            />
+          }/>
+        </RoutesContainer>
+      </AppContainer>
     );
   }
 }
