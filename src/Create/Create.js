@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import shortid from 'shortid'
-import contract from 'truffle-contract'
 
 import AddressesPane from './AddressesPane'
 import SplitIt from '../utils/splitit'
@@ -62,7 +61,7 @@ class Create extends Component {
 
   handlePublish = () => {
     const { web3, currentAccount } = this.props
-    
+
     let { addresses } = this.state
     addresses = Object.keys(addresses).map(id =>
       addresses[id].address
