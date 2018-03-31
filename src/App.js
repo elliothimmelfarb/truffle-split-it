@@ -5,9 +5,9 @@ import {
   NavLink,
 } from 'react-router-dom'
 import getWeb3 from './utils/getWeb3'
-import About from './About/'
-import View from './View/'
-import Create from './Create/'
+import About from './_About/'
+import View from './_View/'
+import Create from './_Create/'
 import colors from './styles/colors'
 
 const AppContainer = styled.div`
