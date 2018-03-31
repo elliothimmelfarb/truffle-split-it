@@ -1,2 +1,2 @@
-import View from './View'
-export default View
+import Container from './Container'
+export default Container
