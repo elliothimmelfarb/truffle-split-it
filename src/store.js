@@ -1,10 +1,10 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux'
-import { routerReducer, routerMiddleware } from 'react-router-redux'
+import {createStore, applyMiddleware} from 'redux'
+import {routerMiddleware} from 'react-router-redux'
 import createHistory from 'history/createBrowserHistory'
 import thunk from 'redux-thunk'
-import { composeWithDevTools } from 'redux-devtools-extension'
+import {composeWithDevTools} from 'redux-devtools-extension/developmentOnly'
 
-const history = createHistory()
+export const history = createHistory()
 
 // Build the middleware for intercepting and dispatching navigation actions
 const historyMiddleware = routerMiddleware(history)
@@ -24,13 +24,9 @@ const composeEnhancers = composeWithDevTools({
   // Specify here other options if needed
 })
 
-
-export default function configureStore(initialState = {}) {
+export default function configureStore(rootReducer, initialState = {}) {
   return createStore(
-    combineReducers({
-      // ...reducers,
-      router: routerReducer
-    }),
+    rootReducer,
     composeEnhancers(...enhancers)
   )
 }
