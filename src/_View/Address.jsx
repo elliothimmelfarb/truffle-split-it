@@ -7,10 +7,10 @@ import {
   ButtonContainer,
   LockedInput,
   LockedInputText,
-} from '../components/AddressInputComponents'
+} from '../components/AddressInputComponents.styled'
 import {
   BaseButtonBlue
-} from '../components/TopLevelComponents'
+} from '../components/TopLevelComponents.styled'
 
 const WithdrawButton = BaseButtonBlue.extend`
   padding: 5px;

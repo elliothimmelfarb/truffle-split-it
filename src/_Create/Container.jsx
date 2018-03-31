@@ -12,7 +12,7 @@ import {
   BaseButtonBlue,
   ContentArea,
   NotConnectedPane,
-} from '../components/TopLevelComponents'
+} from '../components/TopLevelComponents.styled'
 
 const PublishButton = BaseButtonBlue.extend`
   width: 20%;

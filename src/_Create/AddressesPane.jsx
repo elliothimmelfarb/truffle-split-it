@@ -7,7 +7,7 @@ import AddSvg from '../icons/Add'
 import colors from '../styles/colors'
 import {
   BaseButtonBlue,
-} from '../components/TopLevelComponents'
+} from '../components/TopLevelComponents.styled'
 
 const Container = styled.div`
   flex: 1 0;

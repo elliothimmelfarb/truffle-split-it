@@ -4,6 +4,8 @@ import {
   Route,
   NavLink,
 } from 'react-router-dom'
+import {connect} from 'react-redux'
+
 import getWeb3 from './utils/getWeb3'
 import About from './_About/'
 import View from './_View/'
@@ -140,5 +142,13 @@ class App extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+
+})
+
+const mapDispatchToProps = dispatch => ({
+
+})
 
 export default App;

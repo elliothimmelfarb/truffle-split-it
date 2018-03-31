@@ -8,7 +8,7 @@ import {
   Input,
   ButtonContainer,
   InputConfirmButton,
-} from '../components/AddressInputComponents'
+} from '../components/AddressInputComponents.styled'
 
 const Container = AddressContainer.extend`
   background-color: transparent;

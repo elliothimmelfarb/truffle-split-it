@@ -6,10 +6,10 @@ import Modal from 'react-modal'
 import SplitIt from '../utils/splitit'
 import {
   BaseButtonBlue,
-} from '../components/TopLevelComponents'
+} from '../components/TopLevelComponents.styled'
 import {
   Input
-} from '../components/AddressInputComponents'
+} from '../components/AddressInputComponents.styled'
 
 const customStyles = {
   overlay: {

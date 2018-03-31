@@ -11,7 +11,7 @@ import {
   NotConnectedPane,
   ContentArea,
   BaseButtonBlue,
-} from '../components/TopLevelComponents'
+} from '../components/TopLevelComponents.styled'
 import {
   AddressContainer,
   AddressInnerContainer,
@@ -19,7 +19,7 @@ import {
   LockedInput,
   LockedInputText,
   ButtonContainer,
-} from '../components/AddressInputComponents'
+} from '../components/AddressInputComponents.styled'
 
 const TransparentContainer = AddressContainer.extend`
   background-color: transparent;
