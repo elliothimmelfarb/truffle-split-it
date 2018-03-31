@@ -1,6 +1,7 @@
 import contract from 'truffle-contract'
 import SplitIt from '../../build/contracts/SplitIt.json'
 import SplitItCreator from '../../build/contracts/SplitItCreator.json'
+import env from '../env'
 
 
 class Splitit {
@@ -48,7 +49,7 @@ class Splitit {
           .catch(err => console.log(err))
         })
       } else {
-        const instance = this.splitItCreator.at()
+        const instance = this.splitItCreator.at(env[env.net])
         instance.createSplitIt(addresses, {from: this.currentAccount})
         .then(res => {
           console.log(res)
