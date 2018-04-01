@@ -14,9 +14,7 @@ const store = configureStore(rootReducer)
 
 ReactDOM.render(
   <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <App />
-    </ConnectedRouter>
+    <App />
   </Provider>,
   document.getElementById('root')
 );

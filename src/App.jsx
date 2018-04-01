@@ -6,12 +6,14 @@ import {
   NavLink,
 } from 'react-router-dom'
 import {connect} from 'react-redux'
+import {ConnectedRouter} from 'react-router-redux'
 
 import About from './_About/'
 import View from './_View/'
 import Create from './_Create/'
 import colors from './styles/colors'
 import {actions} from './App.ducks'
+import {history} from './store'
 
 const AppContainer = styled.div`
   display: flex;
@@ -72,43 +74,45 @@ class App extends Component {
 
   render() {
     return (
-      <AppContainer>
-        <Header>
-          <Title
-            exact
-            to="/"
-          >
-            Split It
-          </Title>
-          <NavButtonContainer>
-            <NavButton
+      <ConnectedRouter history={history}>
+        <AppContainer>
+          <Header>
+            <Title
               exact
-              to="/create"
-              activeStyle={ activeStyle }
+              to="/"
             >
-              Create
-            </NavButton>
-            <NavButton
-              exact
-              to="/view"
-              activeStyle={ activeStyle }
-            >
-              View
-            </NavButton>
-          </NavButtonContainer>
-        </Header>
-        <RoutesContainer>
-          <Route exact path="/" component={About}/>
-          <Route path="/create" render={() => <Create />}/>
-          {/* <Route path="/view" render={() =>
-            <View
+              Split It
+            </Title>
+            <NavButtonContainer>
+              <NavButton
+                exact
+                to="/create"
+                activeStyle={ activeStyle }
+              >
+                Create
+              </NavButton>
+              <NavButton
+                exact
+                to="/view"
+                activeStyle={ activeStyle }
+              >
+                View
+              </NavButton>
+            </NavButtonContainer>
+          </Header>
+          <RoutesContainer>
+            <Route exact path="/" component={About}/>
+            <Route path="/create" render={() => <Create />}/>
+            {/* <Route path="/view" render={() =>
+              <View
               web3={this.state.web3}
               isConnected={this.state.isConnected}
               currentAccount={this.state.currentAccount}
-            />
-          }/> */}
-        </RoutesContainer>
-      </AppContainer>
+              />
+            }/> */}
+          </RoutesContainer>
+        </AppContainer>
+      </ConnectedRouter>
     );
   }
 }
