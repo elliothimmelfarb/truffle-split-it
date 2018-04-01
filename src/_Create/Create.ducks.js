@@ -40,8 +40,8 @@ const addressIsNotValid = (id) => ({
 })
 
 
-
 // THUNK ACTIONS
+
 function validateAccountAddress(id, address) {
   return (dispatch, getState) => {
     const state = getState()
@@ -105,6 +105,7 @@ export default (state = initialState, action) => {
     }
     case REMOVE_ADDRESS: {
       const addresses = {...state.addresses}
+      if (Object.keys(addresses).length < 3) return state
       delete addresses[action.id]
       return Object.assign({}, state, {addresses})
     }

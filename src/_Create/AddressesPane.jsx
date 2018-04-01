@@ -37,8 +37,8 @@ class AddressesPane extends React.Component {
   }
 
   renderAddresses = () => {
-    const { addresses, validateAddress } = this.props
-    let isDark = false;
+    const { addresses } = this.props
+    let isDark = false
     return Object.keys(addresses).map(id => {
       isDark = !isDark
       return (

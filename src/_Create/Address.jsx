@@ -135,7 +135,6 @@ class Address extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  attributes: state.create.addresses[ownProps.id],
   value: state.create.addresses[ownProps.id].value,
   isValid: state.create.addresses[ownProps.id].isValid,
   isLocked: state.create.addresses[ownProps.id].isLocked,
