@@ -101,15 +101,9 @@ class App extends Component {
             </NavButtonContainer>
           </Header>
           <RoutesContainer>
-            <Route exact path="/" component={About}/>
-            <Route path="/create" render={() => <Create />}/>
-            {/* <Route path="/view" render={() =>
-              <View
-              web3={this.state.web3}
-              isConnected={this.state.isConnected}
-              currentAccount={this.state.currentAccount}
-              />
-            }/> */}
+            <Route exact path="/" component={About} />
+            <Route path="/create" render={() => <Create />} />
+            <Route path="/view" render={() => <View />} />
           </RoutesContainer>
         </AppContainer>
       </ConnectedRouter>

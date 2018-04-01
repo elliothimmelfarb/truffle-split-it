@@ -1,36 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import Modal from 'react-modal'
+import {connect} from 'react-redux'
 
-import SplitIt from '../utils/splitit'
 import {
   BaseButtonBlue,
 } from '../components/TopLevelComponents.styled'
 import {
-  Input
+  Input,
 } from '../components/AddressInputComponents.styled'
+import {actions} from './View.ducks'
+import Modal from '../components/Modal'
 
-const customStyles = {
-  overlay: {
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    display: 'flex',
-    // justifyContent: 'center',
-    // alignItems: 'center'
-  },
-  content : {
-    flex: '1 0',
-    maxWidth: '900px',
-    maxHeight: '90%',
-    backgroundColor: 'grey',
-    display: 'flex',
-    flexDirection: 'column',
-    textAlign: 'center',
-    alignItems: 'stretch',
-    border: 'none',
-    margin: '0 auto'
-  }
-};
 
 const DisplayContainer = styled.div`
   height: 80px;
@@ -62,20 +43,17 @@ const DepositButton = BaseButtonBlue.extend`
   padding: 10px;
 `
 
-
-Modal.setAppElement('#root');
-
 class DepositModal extends React.Component {
   static propTypes = {
-    modalIsOpen: PropTypes.bool,
+    modalIsOpen: PropTypes.bool.isRequired,
     closeModal: PropTypes.func.isRequired,
-    targetAddress: PropTypes.string.isRequired,
-    web3: PropTypes.object.isRequired,
-    currentAccount: PropTypes.string.isRequired,
-  }
-
-  static defaultProps = {
-    modalIsOpen: false,
+    // targetAddress: PropTypes.string.isRequired,
+    // web3: PropTypes.object.isRequired,
+    // currentAccount: PropTypes.string.isRequired,
+    depositAmount: PropTypes.number.isRequired,
+    depositTipAmount: PropTypes.number.isRequired,
+    updateDepositAmount: PropTypes.func.isRequired,
+    updateDepositTipAmount: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -87,19 +65,18 @@ class DepositModal extends React.Component {
     }
   }
 
-  handleDeposit = () => {
-    const { web3, currentAccount, targetAddress } = this.props
-    const { tipAmount, depositAmount } = this.state
-    const amount = parseFloat(tipAmount) + parseFloat(depositAmount)
-    const splitit = new SplitIt(web3, currentAccount)
-    splitit.deposit(targetAddress, amount)
-  }
+  // handleDeposit = () => {
+  //   const { web3, currentAccount, targetAddress } = this.props
+  //   const { tipAmount, depositAmount } = this.state
+  //   const amount = parseFloat(tipAmount) + parseFloat(depositAmount)
+  //   const splitit = new SplitIt(web3, currentAccount)
+  //   splitit.deposit(targetAddress, amount)
+  // }
 
   render() {
     return (
       <Modal
-        isOpen={this.props.modalIsOpen}
-        style={customStyles}
+        isOpen={true}
         onRequestClose={this.props.closeModal}
       >
         <h2>Deposit</h2>
@@ -156,4 +133,18 @@ class DepositModal extends React.Component {
   }
 }
 
-export default DepositModal
+const mapStateToProps = state => ({
+  modalIsOpen: state.view.depositmodalIsOpen,
+  targetAddress: state.view.targetAddress,
+  web3: state.app.web3,
+  currentAccount: state.app.currentAccount,
+  depositAmount: state.view.depositAmount,
+  depositTipAmount: state.view.depositTipAmount,
+})
+
+const mapDispatchToProps = dispatch => ({
+  closeModal: () => dispatch(actions.closeDepositModal()),
+  updateDepositAmount: (amount) => dispatch(actions.updateDepositAmount(amount))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(DepositModal)
