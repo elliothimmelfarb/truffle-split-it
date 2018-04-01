@@ -68,19 +68,17 @@ class Address extends React.Component {
   }
 
   handleChange = (e) => {
-    const { validateAddress } = this.props
+    const { id, saveAddress, validateAddress } = this.props
     this.setState({value: e.target.value})
-    if (e.target.value.length < 1) {
-      this.setState({isValid: true})
-    } else {
-      validateAddress(e.target.value)
-      .then(() => {
-        this.setState({isValid: true})
-      })
-      .catch(() => {
-        this.setState({isValid: false})
-      })
-    }
+    validateAddress(e.target.value)
+    .then(() => {
+      saveAddress(id, this.state.value)
+      this.setState({isValid: true, editing: false})
+    })
+    .catch(() => {
+      this.setState({isValid: false})
+    })
+    console.log(e.target.value);
   }
 
   render() {
@@ -99,14 +97,6 @@ class Address extends React.Component {
                 isempty={ this.state.value.length < 1 }
               />
             </InputContainer>
-            <ButtonContainer>
-              <InputConfirmButton
-                onClick={ () => isValid ? this.handleSave() : '' }
-                isvalid={ isValid }
-              >
-                Save
-              </InputConfirmButton>
-            </ButtonContainer>
           </AddressInnerContainer>
         </AddressContainer>
       )
