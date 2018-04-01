@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
+import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import shortid from 'shortid'
 
@@ -13,6 +14,7 @@ import {
   ContentArea,
   NotConnectedPane,
 } from '../components/TopLevelComponents.styled'
+import {actions} from './Create.ducks'
 
 const PublishButton = BaseButtonBlue.extend`
   width: 20%;
@@ -21,28 +23,17 @@ const PublishButton = BaseButtonBlue.extend`
 `
 
 class Create extends Component {
+
   static propTypes = {
     web3: PropTypes.object,
-    isConnected: PropTypes.bool.isRequired,
+    isConnected: PropTypes.bool,
     currentAccount: PropTypes.string,
   }
+
   static defaultProps = {
     web3: {},
-    currentAccount: '0x'
-  }
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      addresses: {
-        first: {
-          address: '',
-        },
-        second: {
-          address: '',
-        }
-      },
-    }
+    isConnected: false,
+    currentAccount: '0x',
   }
 
   getAddressCount = () => {
@@ -73,12 +64,6 @@ class Create extends Component {
     .then(newAddress => {
       alert(`Your new SplitIt contract address is: ${newAddress} (copy and save it!)`)
     }).catch(err => console.log(err))
-  }
-
-  saveAddress = (id, newAddr) => {
-    const addresses = { ...this.state.addresses }
-    addresses[id].address = newAddr
-    this.setState({ addresses })
   }
 
   handleDelete = (id) => {
@@ -125,10 +110,6 @@ class Create extends Component {
           </TopArea>
           <ContentArea>
             <AddressesPane
-              addresses={ this.state.addresses }
-              addAddress={ this.handleAddAddress }
-              saveAddress={ this.saveAddress }
-              handleDelete={ this.handleDelete }
               validateAddress={ this.validateAddress }
             />
           </ContentArea>
@@ -138,4 +119,14 @@ class Create extends Component {
   }
 }
 
-export default Create;
+const mapStateToProps = state => ({
+  web3: state.app.web3,
+  isConnected: state.app.isConnected,
+  currentAccount: state.app.currentAccount,
+})
+
+const mapDispatchToProps = dispatch => ({
+
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Create)

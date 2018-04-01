@@ -1,4 +1,5 @@
 import React from 'react'
+import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
@@ -8,6 +9,7 @@ import colors from '../styles/colors'
 import {
   BaseButtonBlue,
 } from '../components/TopLevelComponents.styled'
+import {actions} from './Create.ducks'
 
 const Container = styled.div`
   flex: 1 0;
@@ -32,13 +34,11 @@ class AddressesPane extends React.Component {
   static propTypes = {
     addAddress: PropTypes.func.isRequired,
     addresses: PropTypes.object.isRequired,
-    saveAddress: PropTypes.func.isRequired,
-    handleDelete: PropTypes.func.isRequired,
     validateAddress: PropTypes.func.isRequired,
   }
 
   renderAddresses = () => {
-    const { addresses, saveAddress, handleDelete, validateAddress } = this.props
+    const { addresses, validateAddress } = this.props
     let isDark = false;
     return Object.keys(addresses).map(id => {
       isDark = !isDark
@@ -47,9 +47,6 @@ class AddressesPane extends React.Component {
           key={ id }
           id={ id }
           isDark={ isDark }
-          value={ addresses[id].address }
-          saveAddress={ saveAddress }
-          handleDelete={ handleDelete }
           validateAddress={ validateAddress }
         />
       )
@@ -75,4 +72,13 @@ class AddressesPane extends React.Component {
   }
 }
 
-export default AddressesPane
+const mapStateToProps = state => ({
+  addresses: state.create.addresses
+})
+
+const mapDispatchToProps = dispatch => ({
+  addAddress: () => dispatch(actions.addAddress()),
+  removeAddress: (id) => dispatch(actions.removeAddress(id))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddressesPane)

@@ -7,12 +7,11 @@ import {
 } from 'react-router-dom'
 import {connect} from 'react-redux'
 
-import getWeb3 from './utils/getWeb3'
 import About from './_About/'
 import View from './_View/'
 import Create from './_Create/'
 import colors from './styles/colors'
-import {actions} from './app.ducks'
+import {actions} from './App.ducks'
 
 const AppContainer = styled.div`
   display: flex;
@@ -100,14 +99,8 @@ class App extends Component {
         </Header>
         <RoutesContainer>
           <Route exact path="/" component={About}/>
-          {/* <Route path="/create" render={() =>
-            <Create
-              web3={this.state.web3}
-              isConnected={this.state.isConnected}
-              currentAccount={this.state.currentAccount}
-            />
-            }/>
-            <Route path="/view" render={() =>
+          <Route path="/create" render={() => <Create />}/>
+          {/* <Route path="/view" render={() =>
             <View
               web3={this.state.web3}
               isConnected={this.state.isConnected}

@@ -1,4 +1,5 @@
 import React from 'react'
+import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
@@ -16,6 +17,7 @@ import {
   LockedInput,
   LockedInputText,
 } from '../components/AddressInputComponents.styled'
+import {actions} from './Create.ducks'
 
 const LockedInputButton = styled.div`
   display: flex;
@@ -46,25 +48,17 @@ const DeleteButton = LockedInputButton.extend`
 class Address extends React.Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
-    saveAddress: PropTypes.func.isRequired,
+    attributes: PropTypes.object.isRequired,
+    removeAddress: PropTypes.func.isRequired,
+    toggleAddressLockedState: PropTypes.func.isRequired,
     isDark: PropTypes.bool.isRequired,
     validateAddress: PropTypes.func.isRequired,
+    updateAddressValue: PropTypes.func.isRequired,
   }
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      editing: true,
-      value: '',
-      isValid: true,
-    }
-  }
-
-  handleSave = () => {
-    const { id, saveAddress } = this.props
-    saveAddress(id, this.state.value)
-    this.setState({ editing: false })
+  shouldComponentUpdate(nextProps) {
+    console.log(nextProps.attributes)
+    return this.props.attributes.value !== nextProps.attributes.value
   }
 
   handleChange = (e) => {
@@ -84,24 +78,33 @@ class Address extends React.Component {
   }
 
   render() {
-    const { isValid } = this.state
-    if (this.state.editing) {
+    const {
+      toggleAddressLockedState,
+      id,
+      removeAddress,
+      isDark,
+      updateAddressValue,
+      attributes,
+    } = this.props
+    const { isValid, value, isLocked } = attributes
+
+    if (!isLocked) {
       return (
-        <AddressContainer isdark={ this.props.isDark }>
+        <AddressContainer isdark={ isDark }>
           <AddressInnerContainer>
             <InputContainer>
               <Input
-                defaultValue={ this.state.value }
+                defaultValue={ value }
                 placeholder="Input a valid Ethereum account address"
-                disabled={ !this.state.editing }
-                onChange={ this.handleChange }
+                disabled={ isLocked }
+                onChange={ (e) => updateAddressValue(id, e.target.value) }
                 isvalid={ isValid }
-                isempty={ this.state.value.length < 1 }
+                isempty={ value.length < 1 }
               />
             </InputContainer>
             <ButtonContainer>
               <InputConfirmButton
-                onClick={ () => isValid ? this.handleSave() : '' }
+                onClick={ () => isValid ? toggleAddressLockedState(id) : '' }
                 isvalid={ isValid }
               >
                 Save
@@ -112,19 +115,19 @@ class Address extends React.Component {
       )
     }
     return (
-      <AddressContainer isdark={ this.props.isDark }>
+      <AddressContainer isdark={ isDark }>
         <AddressInnerContainer>
           <LockedInput>
-            <LockedInputText>{ this.props.value }</LockedInputText>
+            <LockedInputText>{ value }</LockedInputText>
           </LockedInput>
           <ButtonContainer>
             <EditButton
-              onClick={() => this.setState({editing: true})}
+              onClick={() => toggleAddressLockedState(id)}
             >
               <EditSvg />
             </EditButton>
             <DeleteButton
-              onClick={() => this.props.handleDelete(this.props.id)}
+              onClick={() => removeAddress(id)}
             >
               <DeleteSvg />
             </DeleteButton>
@@ -135,4 +138,14 @@ class Address extends React.Component {
   }
 }
 
-export default Address
+const mapStateToProps = (state, ownProps) => ({
+  attributes: state.create.addresses[ownProps.id],
+})
+
+const mapDispatchToProps = dispatch => ({
+  toggleAddressLockedState: (id) => dispatch(actions.toggleAddressLockedState(id)),
+  removeAddress: (id) => dispatch(actions.removeAddress(id)),
+  updateAddressValue: (id, value) => dispatch(actions.updateAddressValue(id, value)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Address)

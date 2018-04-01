@@ -37,7 +37,6 @@ function connectToNet() {
             web3,
             currentAccount: accs[0]
           }
-          console.log(web3)
           dispatch(connectToNetSuccess(payload))
         }
       })
@@ -72,10 +71,9 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, {attemptingConnection: true})
     }
     case CONNECT_TO_NET_FAIL: {
-      return Object.assign({}, state, {attemptingConnection: true})
+      return Object.assign({}, state, {attemptingConnection: true, isConnected: false})
     }
     case CONNECT_TO_NET_SUCCESS: {
-      console.log(action)
       return Object.assign({}, state, {
         attemptingConnection: false,
         isConnected: true,
