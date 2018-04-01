@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import {
   Route,
@@ -11,6 +12,7 @@ import About from './_About/'
 import View from './_View/'
 import Create from './_Create/'
 import colors from './styles/colors'
+import {actions} from './app.ducks'
 
 const AppContainer = styled.div`
   display: flex;
@@ -60,38 +62,13 @@ const activeStyle = {
 
 class App extends Component {
 
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      web3: {},
-      isConnected: false,
-      currentAccount: '',
-    }
-
-    this.connectToNetwork().then(() => console.log('Connected:', this.state))
+  static propTypes = {
+    connectToNet: PropTypes.func.isRequired,
   }
 
-  connectToNetwork = () => {
-    return new Promise((resolve, reject) => {
-      const interval = window.setInterval(async () => {
-        const results = await getWeb3
-        if (!results) return console.error('Error finding web3.')
-        const { web3 } = results
-        const app = this
-        web3.eth.getAccounts((err, accs) => {
-          if (!err && accs.length) {
-            clearInterval(interval)
-            app.setState({
-              web3,
-              isConnected: true,
-              currentAccount: accs[0]
-            })
-            resolve()
-          }
-        })
-      }, 100)
-    })
+  constructor(props) {
+    super(props)
+    this.props.connectToNet()
   }
 
   render() {
@@ -123,20 +100,20 @@ class App extends Component {
         </Header>
         <RoutesContainer>
           <Route exact path="/" component={About}/>
-          <Route path="/create" render={() =>
+          {/* <Route path="/create" render={() =>
             <Create
               web3={this.state.web3}
               isConnected={this.state.isConnected}
               currentAccount={this.state.currentAccount}
             />
-          }/>
-          <Route path="/view" render={() =>
+            }/>
+            <Route path="/view" render={() =>
             <View
               web3={this.state.web3}
               isConnected={this.state.isConnected}
               currentAccount={this.state.currentAccount}
             />
-          }/>
+          }/> */}
         </RoutesContainer>
       </AppContainer>
     );
@@ -148,7 +125,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-
+  connectToNet: () => dispatch(actions.connectToNet())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
