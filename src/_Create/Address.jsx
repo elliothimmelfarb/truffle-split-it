@@ -48,33 +48,29 @@ const DeleteButton = LockedInputButton.extend`
 class Address extends React.Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
-    attributes: PropTypes.object.isRequired,
+    value: PropTypes.string.isRequired,
+    isLocked: PropTypes.bool.isRequired,
+    isValid: PropTypes.bool.isRequired,
     removeAddress: PropTypes.func.isRequired,
     toggleAddressLockedState: PropTypes.func.isRequired,
     isDark: PropTypes.bool.isRequired,
-    validateAddress: PropTypes.func.isRequired,
+    validateAccountAddress: PropTypes.func.isRequired,
     updateAddressValue: PropTypes.func.isRequired,
   }
 
-  shouldComponentUpdate(nextProps) {
-    console.log(nextProps.attributes)
-    return this.props.attributes.value !== nextProps.attributes.value
+  shouldComponentUpdate = nextProps => {
+    const { isValid, value, isLocked } = this.props
+    return (
+      isValid !== nextProps.isValid ||
+      value !== nextProps.value ||
+      isLocked !== nextProps.isLocked
+    )
   }
 
-  handleChange = (e) => {
-    const { validateAddress } = this.props
-    this.setState({value: e.target.value})
-    if (e.target.value.length < 1) {
-      this.setState({isValid: true})
-    } else {
-      validateAddress(e.target.value)
-      .then(() => {
-        this.setState({isValid: true})
-      })
-      .catch(() => {
-        this.setState({isValid: false})
-      })
-    }
+  handleUpdateValue = (e) => {
+    const {id, updateAddressValue, validateAccountAddress} = this.props
+    updateAddressValue(id, e.target.value)
+    validateAccountAddress(id, e.target.value)
   }
 
   render() {
@@ -83,10 +79,10 @@ class Address extends React.Component {
       id,
       removeAddress,
       isDark,
-      updateAddressValue,
-      attributes,
+      value,
+      isValid,
+      isLocked,
     } = this.props
-    const { isValid, value, isLocked } = attributes
 
     if (!isLocked) {
       return (
@@ -94,10 +90,10 @@ class Address extends React.Component {
           <AddressInnerContainer>
             <InputContainer>
               <Input
-                defaultValue={ value }
+                value={ value }
                 placeholder="Input a valid Ethereum account address"
                 disabled={ isLocked }
-                onChange={ (e) => updateAddressValue(id, e.target.value) }
+                onChange={ this.handleUpdateValue }
                 isvalid={ isValid }
                 isempty={ value.length < 1 }
               />
@@ -140,12 +136,16 @@ class Address extends React.Component {
 
 const mapStateToProps = (state, ownProps) => ({
   attributes: state.create.addresses[ownProps.id],
+  value: state.create.addresses[ownProps.id].value,
+  isValid: state.create.addresses[ownProps.id].isValid,
+  isLocked: state.create.addresses[ownProps.id].isLocked,
 })
 
 const mapDispatchToProps = dispatch => ({
   toggleAddressLockedState: (id) => dispatch(actions.toggleAddressLockedState(id)),
   removeAddress: (id) => dispatch(actions.removeAddress(id)),
   updateAddressValue: (id, value) => dispatch(actions.updateAddressValue(id, value)),
+  validateAccountAddress: (id, value) => dispatch(actions.validateAccountAddress(id, value))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Address)

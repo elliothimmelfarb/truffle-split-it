@@ -27,10 +27,36 @@ const updateAddressValue = (id, value) => ({
   type: UPDATE_ADDRESS_VALUE,
 })
 
+const ADDRESS_IS_VALID = 'create/ADDRESS_IS_VALID'
+const addressIsValid = (id) => ({
+  id,
+  type: ADDRESS_IS_VALID,
+})
+
+const ADDRESS_IS_NOT_VALID = 'create/ADDRESS_IS_NOT_VALID'
+const addressIsNotValid = (id) => ({
+  id,
+  type: ADDRESS_IS_NOT_VALID,
+})
+
 
 
 // THUNK ACTIONS
-
+function validateAccountAddress(id, address) {
+  return (dispatch, getState) => {
+    const state = getState()
+    const {web3} = state.app
+    if (web3.utils.isAddress(address)) {
+      web3.eth.getCode(address, (err, res) => {
+        if (err) return dispatch(addressIsNotValid(id))
+        if (res.length > 3) return dispatch(addressIsNotValid(id))
+        dispatch(addressIsValid(id))
+      })
+    } else {
+      dispatch(addressIsNotValid(id))
+    }
+  }
+}
 
 
 // ACTION EXPORTS
@@ -40,6 +66,7 @@ export const actions = {
   removeAddress,
   toggleAddressLockedState,
   updateAddressValue,
+  validateAccountAddress,
 }
 
 
@@ -89,6 +116,16 @@ export default (state = initialState, action) => {
     case UPDATE_ADDRESS_VALUE: {
       const addresses = {...state.addresses}
       addresses[action.id].value = action.value
+      return Object.assign({}, state, {addresses})
+    }
+    case ADDRESS_IS_VALID: {
+      const addresses = {...state.addresses}
+      addresses[action.id].isValid = true
+      return Object.assign({}, state, {addresses})
+    }
+    case ADDRESS_IS_NOT_VALID: {
+      const addresses = {...state.addresses}
+      addresses[action.id].isValid = false
       return Object.assign({}, state, {addresses})
     }
     default: {

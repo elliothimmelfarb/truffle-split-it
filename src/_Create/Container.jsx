@@ -40,16 +40,6 @@ class Create extends Component {
     return Object.keys(this.state.addresses).length
   }
 
-  handleAddAddress = () => {
-    if (this.getAddressCount() > 9) return
-    const id = shortid.generate()
-    const addresses = { ...this.state.addresses }
-    addresses[id] = {
-      address: ''
-    }
-    this.setState({ addresses })
-  }
-
   handlePublish = () => {
     const { web3, currentAccount } = this.props
 
@@ -73,21 +63,6 @@ class Create extends Component {
     this.setState({ addresses })
   }
 
-  validateAddress = (address) => {
-    const { web3 } = this.props
-    return new Promise((resolve, reject) => {
-      if (web3.utils.isAddress(address)) {
-        web3.eth.getCode(address, (err, res) => {
-          if (err) return reject(err)
-          if (res.length > 3) return reject(res)
-          resolve(res)
-        })
-      } else {
-        reject()
-      }
-    })
-  }
-
   render() {
     return (
       <Container>
@@ -109,9 +84,7 @@ class Create extends Component {
             </PublishButton>
           </TopArea>
           <ContentArea>
-            <AddressesPane
-              validateAddress={ this.validateAddress }
-            />
+            <AddressesPane />
           </ContentArea>
         </PaddingContainer>
       </Container>
@@ -126,7 +99,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-
+  
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Create)

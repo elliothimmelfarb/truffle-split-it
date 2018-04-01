@@ -34,7 +34,6 @@ class AddressesPane extends React.Component {
   static propTypes = {
     addAddress: PropTypes.func.isRequired,
     addresses: PropTypes.object.isRequired,
-    validateAddress: PropTypes.func.isRequired,
   }
 
   renderAddresses = () => {
@@ -47,7 +46,6 @@ class AddressesPane extends React.Component {
           key={ id }
           id={ id }
           isDark={ isDark }
-          validateAddress={ validateAddress }
         />
       )
     })
@@ -78,7 +76,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   addAddress: () => dispatch(actions.addAddress()),
-  removeAddress: (id) => dispatch(actions.removeAddress(id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddressesPane)
