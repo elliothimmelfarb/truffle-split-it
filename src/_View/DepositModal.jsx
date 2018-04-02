@@ -74,10 +74,18 @@ class DepositModal extends React.Component {
   // }
 
   render() {
+    const {
+      modalIsOpen,
+      closeModal,
+      depositAmount,
+      depositTipAmount,
+      updateDepositAmount,
+      updateDepositTipAmount,
+    } = this.props
     return (
       <Modal
-        isOpen={true}
-        onRequestClose={this.props.closeModal}
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
       >
         <h2>Deposit</h2>
         <DisplayContainer>
@@ -87,8 +95,8 @@ class DepositModal extends React.Component {
           <InputContainer>
             <ModifiedInput
               type="number"
-              onChange={e => this.setState({tipAmount: e.target.value})}
-              placeholder="0.0"
+              onChange={e => updateDepositTipAmount(e.target.value)}
+              value={depositTipAmount}
               isvalid
             />
             ETH
@@ -103,8 +111,8 @@ class DepositModal extends React.Component {
           <InputContainer>
             <ModifiedInput
               type="number"
-              onChange={e => this.setState({depositAmount: e.target.value})}
-              placeholder="0.0"
+              onChange={e => updateDepositAmount(e.target.value)}
+              placeholder={depositAmount}
               isvalid
             />
             ETH
@@ -112,14 +120,14 @@ class DepositModal extends React.Component {
         </DisplayContainer>
         <br />
         <DisplayContainer>
-          Tip Amount: {this.state.tipAmount} ETH
+          Tip Amount: {depositTipAmount} ETH
         </DisplayContainer>
         <DisplayContainer>
-          Deposit Amount: {this.state.depositAmount} ETH
+          Deposit Amount: {depositAmount} ETH
         </DisplayContainer>
         <DisplayContainer>
           Total: {
-            parseFloat(this.state.depositAmount) + parseFloat(this.state.tipAmount)
+            parseFloat(depositAmount) + parseFloat(depositTipAmount)
           } ETH
         </DisplayContainer>
         <DepositButton
@@ -134,7 +142,7 @@ class DepositModal extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  modalIsOpen: state.view.depositmodalIsOpen,
+  modalIsOpen: state.view.depositModalIsOpen,
   targetAddress: state.view.targetAddress,
   web3: state.app.web3,
   currentAccount: state.app.currentAccount,
@@ -144,7 +152,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   closeModal: () => dispatch(actions.closeDepositModal()),
-  updateDepositAmount: (amount) => dispatch(actions.updateDepositAmount(amount))
+  updateDepositAmount: (amount) => dispatch(actions.updateDepositAmount(amount)),
+  updateDepositTipAmount: (amount) => dispatch(actions.updateDepositTipAmount(amount)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DepositModal)

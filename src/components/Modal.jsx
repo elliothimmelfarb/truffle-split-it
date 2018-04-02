@@ -27,7 +27,7 @@ ReactModal.setAppElement('#root');
 
 class Modal extends React.Component {
   static propTypes = {
-    children: PropTypes.object,
+    children: PropTypes.array,
     isOpen: PropTypes.bool,
     onRequestClose: PropTypes.func.isRequired,
   }

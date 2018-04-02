@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import {connect} from 'react-redux'
 
 import SplitIt from '../utils/splitit'
 import AddressSearch from './AddressSearch'
@@ -20,6 +21,7 @@ import {
   LockedInputText,
   ButtonContainer,
 } from '../components/AddressInputComponents.styled'
+import {actions} from './View.ducks'
 
 const TransparentContainer = AddressContainer.extend`
   background-color: transparent;
@@ -30,26 +32,7 @@ const DepositButton = BaseButtonBlue.extend`
 
 class View extends Component {
   static propTypes = {
-    web3: PropTypes.object,
     isConnected: PropTypes.bool.isRequired,
-    currentAccount: PropTypes.string
-  }
-  static defaultProps = {
-    web3: {},
-    currentAccount: '',
-  }
-
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      searchSuccessful: false,
-      isSearching: false,
-      targetContractAddress: '',
-      addressList: [],
-      depositModalOpen: false,
-    }
-
   }
 
   handleSearch = (targetAddress) => {
@@ -73,29 +56,6 @@ class View extends Component {
     }).catch(err => console.log('err:', err))
   }
 
-  handleDepositModalOpen = () => {
-    this.setState({depositModalIsOpen: true})
-  }
-
-  handleDepositModalClose = () => {
-    this.setState({depositModalIsOpen: false})
-  }
-
-  validateAddress = (address) => {
-    const {web3} = this.props
-    return new Promise((resolve, reject) => {
-      if (web3.utils.isAddress(address)) {
-        web3.eth.getCode(address, (err, res) => {
-          if (err) return reject()
-          if (res === '0x') return reject()
-          resolve()
-        })
-      } else {
-        reject()
-      }
-    })
-  }
-
   handleWithdraw = () => {
     const {web3, currentAccount} = this.props
     const splitit = new SplitIt(web3, currentAccount)
@@ -106,12 +66,19 @@ class View extends Component {
   }
 
   render() {
-    console.log(this.state.addressList)
+    const {
+      isConnected,
+      targetAddress,
+      openDepositModal,
+      addressList,
+    } = this.props
+
     return (
       <Container>
+        <DepositModal />
         <PaddingContainer>
           {
-            !this.props.isConnected ?
+            !isConnected ?
               <NotConnectedPane>
                 Not Connected to the Ethereum Network
               </NotConnectedPane> : ''
@@ -123,45 +90,42 @@ class View extends Component {
             validateAddress={this.validateAddress}
           />
           {
-            this.state.searchSuccessful ?
+            addressList.length ?
               <TransparentContainer>
                 <AddressInnerContainer>
                   <InputContainer>
                     <LockedInput>
                       <LockedInputText>
-                        {this.state.targetContractAddress}
+                        {targetAddress}
                       </LockedInputText>
                     </LockedInput>
                   </InputContainer>
                   <ButtonContainer>
                     <DepositButton
-                      onClick={this.handleDepositModalOpen}
+                      onClick={openDepositModal}
                     >
                       Deposit
                     </DepositButton>
                   </ButtonContainer>
                 </AddressInnerContainer>
-              </TransparentContainer> :
-              ''
+              </TransparentContainer> : ''
           }
           <ContentArea>
-            <ViewAddressesPane
-              addressList={this.state.addressList}
-              currentAccount={this.props.currentAccount}
-              handleWithdraw={this.handleWithdraw}
-            />
+            <ViewAddressesPane />
           </ContentArea>
         </PaddingContainer>
-        <DepositModal
-          modalIsOpen={this.state.depositModalIsOpen}
-          closeModal={this.handleDepositModalClose}
-          targetAddress={this.state.targetContractAddress}
-          web3={this.props.web3}
-          currentAccount={this.props.currentAccount}
-        />
       </Container>
     );
   }
 }
 
-export default View;
+const mapStateToProps = state => ({
+  isConnected: state.app.isConnected,
+  addressList: state.view.addressList
+})
+
+const mapDispatchToProps = dispatch => ({
+  openDepositModal: () => dispatch(actions.openDepositModal()),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(View)

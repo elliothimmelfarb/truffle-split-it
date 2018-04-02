@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {connect} from 'react-redux'
 
 import {
   AddressContainer,
@@ -9,6 +10,7 @@ import {
   ButtonContainer,
   InputConfirmButton,
 } from '../components/AddressInputComponents.styled'
+import {actions} from './View.ducks'
 
 const Container = AddressContainer.extend`
   background-color: transparent;
@@ -17,6 +19,7 @@ const Container = AddressContainer.extend`
 
 class AddressSearch extends React.Component {
   static propTypes = {
+    targetAddress: PropTypes.string.isRequired,
     isSearching: PropTypes.bool.isRequired,
     searchSuccessful: PropTypes.bool.isRequired,
     validateAddress: PropTypes.func.isRequired,
@@ -87,4 +90,16 @@ class AddressSearch extends React.Component {
   }
 }
 
-export default AddressSearch
+const mapStateToProps = state => ({
+  targetAddress: state.view.targetAddress,
+  addressList: state.view.addressList,
+  searchAddressIsValid: state.view.searchAddressIsValid,
+  searchIsLocked: state.view.searchIsLocked,
+
+})
+
+const mapDispatchToProps = dispatch => ({
+  openDepositModal: () => dispatch(actions.openDepositModal()),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddressSearch)
