@@ -28,8 +28,8 @@ const AddressState = {
 
 const LockedInputButton = styled.div`
   display: flex;
-  flex: 1 0;
   height: 100%;
+  width: 45px;
   align-items: center;
   justify-content: center;
   border-radius: 5px;
@@ -37,14 +37,15 @@ const LockedInputButton = styled.div`
 `
 
 const EditButton = LockedInputButton.extend`
+  margin-left: 6px;
   background-color: ${colors.button_background};
   border: 1px solid ${colors.button_stroke};
-  margin-right: 5px;
   &:hover {
     background-color: #326E9C;
   }
 `
 const DeleteButton = LockedInputButton.extend`
+  margin-left: 6px;
   background-color: ${colors.delete_button_background};
   border: 1px solid ${colors.delete_button_stroke};
   &:hover {
@@ -138,6 +139,7 @@ class Address extends React.Component {
                   onChange={ this.handleChange }
                   isvalid={ isValid }
                   isempty={ this.state.value.length < 1 }
+                  flatEdge={ false }
                 />
               </InputContainer>
             </AddressInnerContainer>
@@ -155,6 +157,7 @@ class Address extends React.Component {
                   onChange={ this.handleChange }
                   isvalid={ isValid }
                   isempty={ this.state.value.length < 1 }
+                  flatEdge={ false }
                 />
               </InputContainer>
               <ButtonContainer>
@@ -220,6 +223,7 @@ class Address extends React.Component {
                   onChange={ this.handleChange }
                   isvalid={ isValid }
                   isempty={ this.state.value.length < 1 }
+                  flatEdge={ true }
                 />
               </InputContainer>
               <ButtonContainer>
@@ -245,6 +249,7 @@ class Address extends React.Component {
                   onChange={ this.handleChange }
                   isvalid={ isValid }
                   isempty={ this.state.value.length < 1 }
+                  flatEdge={ true }
                 />
               </InputContainer>
               <ButtonContainer>

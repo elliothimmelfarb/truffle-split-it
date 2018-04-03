@@ -24,7 +24,7 @@ export const AddressInnerContainer = styled.div`
   justify-content: space-around;
 `
 export const InputContainer = styled.div`
-  flex: 5 0;
+  flex: 20 0;
   display: flex;
   align-items: center;
   height: 100%;
@@ -40,7 +40,11 @@ export const Input = styled.input`
   height: 60%;
   flex: 1 0;
   font-size: 13px;
-  border-radius: 5px 0 0 5px;
+  border-radius: ${
+    props => props.flatEdge ?
+    '5px 0 0 5px' :
+    '5px'
+  };
   padding: 0 5px;
   border: 1px solid ${
     props => props.isempty ?
@@ -50,7 +54,7 @@ export const Input = styled.input`
 `
 export const InputConfirmButton = styled.div`
   display: flex;
-  flex: 1 0;
+  width: 60px;
   height: 100%;
   text-align: center;
   background-color: ${props => props.isvalid ? colors.button_background : colors.button_disabled_bg};
@@ -59,7 +63,7 @@ export const InputConfirmButton = styled.div`
   border-radius: 0 5px 5px 0;
   border: 1px solid ${colors.button_stroke};
   border-left: none;
-  padding: 0 10px;
+  padding-left: 0px;
   color: ${colors.button_content};
   cursor: pointer;
   &:hover {
