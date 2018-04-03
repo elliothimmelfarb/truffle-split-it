@@ -17,6 +17,15 @@ import {
   LockedInputText,
 } from '../components/AddressInputComponents'
 
+const AddressState = {
+  initialInput:'INITIAL_INPUT',
+  initialInputDisposable:'INITIAL_INPUT_DISPOSABLE',
+  lockedInput:'LOCKED_INPUT',
+  lockedInputDisposable:'LOCKED_INPUT_DISPOSABLE',
+  editingInput:'EDITING_INPUT',
+  editingInputDisposable:'EDITING_INPUT_DISPOSABLE',
+}
+
 const LockedInputButton = styled.div`
   display: flex;
   flex: 1 0;
@@ -49,31 +58,63 @@ class Address extends React.Component {
     value: PropTypes.string.isRequired,
     saveAddress: PropTypes.func.isRequired,
     isDark: PropTypes.bool.isRequired,
+    isDisposable: PropTypes.bool.isRequired,
     validateAddress: PropTypes.func.isRequired,
   }
 
   constructor(props) {
     super(props)
     this.state = {
-      editing: true,
+      addressState: AddressState.initialInputDisposable,
       value: '',
       isValid: true,
     }
   }
 
+  componentWillMount() {
+
+    if (!this.props.isDisposable) {
+      this.setState({addressState:AddressState.initialInput});
+    }
+
+  }
+
   handleSave = () => {
-    const { id, saveAddress } = this.props
+    const { id, saveAddress, isDisposable } = this.props
     saveAddress(id, this.state.value)
-    this.setState({ editing: false })
+
+    if (isDisposable) {
+        this.setState({ addressState: AddressState.lockedInputDisposable })
+    } else {
+        this.setState({ addressState: AddressState.lockedInput})
+    }
+
+
+  }
+
+  handleEditButton = () => {
+    const { isDisposable } = this.props
+
+    if (isDisposable) {
+        this.setState({ addressState: AddressState.editingInputDisposable })
+    } else {
+        this.setState({ addressState: AddressState.editingInput})
+    }
+
   }
 
   handleChange = (e) => {
-    const { id, saveAddress, validateAddress } = this.props
+    const { id, saveAddress, validateAddress, isDisposable } = this.props
     this.setState({value: e.target.value})
     validateAddress(e.target.value)
     .then(() => {
       saveAddress(id, this.state.value)
-      this.setState({isValid: true, editing: false})
+
+      if (isDisposable) {
+          this.setState({isValid: true, addressState: AddressState.lockedInputDisposable })
+      } else {
+          this.setState({isValid: true, addressState: AddressState.lockedInput})
+      }
     })
     .catch(() => {
       this.setState({isValid: false})
@@ -82,46 +123,151 @@ class Address extends React.Component {
   }
 
   render() {
-    const { isValid } = this.state
-    if (this.state.editing) {
-      return (
-        <AddressContainer isdark={ this.props.isDark }>
-          <AddressInnerContainer>
-            <InputContainer>
-              <Input
-                defaultValue={ this.state.value }
-                placeholder="Input a valid Ethereum account address"
-                disabled={ !this.state.editing }
-                onChange={ this.handleChange }
-                isvalid={ isValid }
-                isempty={ this.state.value.length < 1 }
-              />
-            </InputContainer>
-          </AddressInnerContainer>
-        </AddressContainer>
-      )
+    const { isValid, addressState } = this.state
+
+    switch (addressState) {
+
+      case AddressState.initialInput:
+        return (
+          <AddressContainer isdark={ this.props.isDark }>
+            <AddressInnerContainer>
+              <InputContainer>
+                <Input
+                  defaultValue={ this.state.value }
+                  placeholder="Input a valid Ethereum account address"
+                  onChange={ this.handleChange }
+                  isvalid={ isValid }
+                  isempty={ this.state.value.length < 1 }
+                />
+              </InputContainer>
+            </AddressInnerContainer>
+          </AddressContainer>
+        )
+
+      case AddressState.initialInputDisposable:
+        return (
+          <AddressContainer isdark={ this.props.isDark }>
+            <AddressInnerContainer>
+              <InputContainer>
+                <Input
+                  defaultValue={ this.state.value }
+                  placeholder="Input a valid Ethereum account address"
+                  onChange={ this.handleChange }
+                  isvalid={ isValid }
+                  isempty={ this.state.value.length < 1 }
+                />
+              </InputContainer>
+              <ButtonContainer>
+                <DeleteButton
+                  onClick={() => this.props.handleDelete(this.props.id)}
+                >
+                  <DeleteSvg />
+                </DeleteButton>
+              </ButtonContainer>
+            </AddressInnerContainer>
+          </AddressContainer>
+        )
+
+      case AddressState.lockedInput:
+        return (
+          <AddressContainer isdark={ this.props.isDark }>
+            <AddressInnerContainer>
+              <LockedInput>
+                <LockedInputText>{ this.props.value }</LockedInputText>
+              </LockedInput>
+              <ButtonContainer>
+                <EditButton
+                  onClick={ this.handleEditButton }
+                >
+                  <EditSvg />
+                </EditButton>
+              </ButtonContainer>
+            </AddressInnerContainer>
+          </AddressContainer>
+        )
+
+      case AddressState.lockedInputDisposable:
+        return (
+          <AddressContainer isdark={ this.props.isDark }>
+            <AddressInnerContainer>
+              <LockedInput>
+                <LockedInputText>{ this.props.value }</LockedInputText>
+              </LockedInput>
+              <ButtonContainer>
+                <EditButton
+                  onClick={ this.handleEditButton }
+                >
+                  <EditSvg />
+                </EditButton>
+                <DeleteButton
+                  onClick={() => this.props.handleDelete(this.props.id)}
+                >
+                  <DeleteSvg />
+                </DeleteButton>
+              </ButtonContainer>
+            </AddressInnerContainer>
+          </AddressContainer>
+        )
+
+      case AddressState.editingInput:
+        return (
+          <AddressContainer isdark={ this.props.isDark }>
+            <AddressInnerContainer>
+              <InputContainer>
+                <Input
+                  defaultValue={ this.state.value }
+                  placeholder="Input a valid Ethereum account address"
+                  onChange={ this.handleChange }
+                  isvalid={ isValid }
+                  isempty={ this.state.value.length < 1 }
+                />
+              </InputContainer>
+              <ButtonContainer>
+                <InputConfirmButton
+                  onClick={ () => isValid ? this.handleSave() : '' }
+                  isvalid={ isValid }
+                >
+                  Done
+                </InputConfirmButton>
+              </ButtonContainer>
+            </AddressInnerContainer>
+          </AddressContainer>
+        )
+
+      case AddressState.editingInputDisposable:
+        return (
+          <AddressContainer isdark={ this.props.isDark }>
+            <AddressInnerContainer>
+              <InputContainer>
+                <Input
+                  defaultValue={ this.state.value }
+                  placeholder="Input a valid Ethereum account address"
+                  onChange={ this.handleChange }
+                  isvalid={ isValid }
+                  isempty={ this.state.value.length < 1 }
+                />
+              </InputContainer>
+              <ButtonContainer>
+                <InputConfirmButton
+                  onClick={ () => isValid ? this.handleSave() : '' }
+                  isvalid={ isValid }
+                >
+                  Done
+                </InputConfirmButton>
+                <DeleteButton
+                  onClick={() => this.props.handleDelete(this.props.id)}
+                >
+                  <DeleteSvg />
+                </DeleteButton>
+              </ButtonContainer>
+            </AddressInnerContainer>
+          </AddressContainer>
+        )
+
+      default:
+        return null;
+
     }
-    return (
-      <AddressContainer isdark={ this.props.isDark }>
-        <AddressInnerContainer>
-          <LockedInput>
-            <LockedInputText>{ this.props.value }</LockedInputText>
-          </LockedInput>
-          <ButtonContainer>
-            <EditButton
-              onClick={() => this.setState({editing: true})}
-            >
-              <EditSvg />
-            </EditButton>
-            <DeleteButton
-              onClick={() => this.props.handleDelete(this.props.id)}
-            >
-              <DeleteSvg />
-            </DeleteButton>
-          </ButtonContainer>
-        </AddressInnerContainer>
-      </AddressContainer>
-    )
   }
 }
 
