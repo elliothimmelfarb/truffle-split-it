@@ -111,8 +111,10 @@ class Create extends Component {
             !this.props.isConnected ?
               <NotConnectedPane>
                 Not Connected to the Ethereum Network
-              </NotConnectedPane> :
-              ''
+              </NotConnectedPane> : this.props.currentAccount == '' ?
+                <NotConnectedPane>
+                  No Account
+                </NotConnectedPane> : ''
           }
           <TopArea>
             <PageTitle>Create Split It Contract</PageTitle>

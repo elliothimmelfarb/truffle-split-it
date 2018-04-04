@@ -114,7 +114,10 @@ class View extends Component {
             !this.props.isConnected ?
               <NotConnectedPane>
                 Not Connected to the Ethereum Network
-              </NotConnectedPane> : ''
+              </NotConnectedPane> : this.props.currentAccount == '' ?
+                <NotConnectedPane>
+                  No Account
+                </NotConnectedPane> : ''
           }
           <AddressSearch
             isSearching={this.state.isSearching}
