@@ -40,9 +40,8 @@ class AddressesPane extends React.Component {
   renderAddresses = () => {
     const { addresses, saveAddress, handleDelete, validateAddress } = this.props
     let isDark = false;
-    let isDisposable = true;
+    let isDisposable = Object.keys(addresses).length > 2;
     return Object.keys(addresses).map( (id, index) => {
-      isDisposable = index > 1
       isDark = !isDark
       return (
         <Address
