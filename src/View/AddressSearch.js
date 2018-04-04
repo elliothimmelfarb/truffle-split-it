@@ -68,6 +68,7 @@ class AddressSearch extends React.Component {
                 onChange={ this.handleChange }
                 isvalid={ isValid }
                 isempty={ targetAddress.length < 1 }
+                flatEdge={ true }
               />
             }
           </InputContainer>
