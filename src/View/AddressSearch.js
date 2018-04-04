@@ -14,7 +14,9 @@ const Container = AddressContainer.extend`
   background-color: transparent;
   flex: 1 0;
 `
-
+export const SearchButton = InputConfirmButton.extend`
+  width: 90px;
+`
 class AddressSearch extends React.Component {
   static propTypes = {
     isSearching: PropTypes.bool.isRequired,
@@ -74,12 +76,12 @@ class AddressSearch extends React.Component {
           </InputContainer>
           <ButtonContainer>
             {
-              <InputConfirmButton
+              <SearchButton
                 onClick={() => isValid ? this.handleSearch() : ''}
                 isvalid={ isValid }
               >
                 Search
-              </InputConfirmButton>
+              </SearchButton>
             }
           </ButtonContainer>
         </AddressInnerContainer>
