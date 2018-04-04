@@ -19,11 +19,8 @@ import {
 
 const AddressState = {
   initialInput:'INITIAL_INPUT',
-  initialInputDisposable:'INITIAL_INPUT_DISPOSABLE',
   lockedInput:'LOCKED_INPUT',
-  lockedInputDisposable:'LOCKED_INPUT_DISPOSABLE',
   editingInput:'EDITING_INPUT',
-  editingInputDisposable:'EDITING_INPUT_DISPOSABLE',
 }
 
 const LockedInputButton = styled.div`
@@ -66,42 +63,20 @@ class Address extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      addressState: AddressState.initialInputDisposable,
+      addressState: AddressState.initialInput,
       value: '',
       isValid: true,
     }
   }
 
-  componentWillMount() {
-
-    if (!this.props.isDisposable) {
-      this.setState({addressState:AddressState.initialInput});
-    }
-
-  }
-
   handleSave = () => {
     const { id, saveAddress, isDisposable } = this.props
     saveAddress(id, this.state.value)
-
-    if (isDisposable) {
-        this.setState({ addressState: AddressState.lockedInputDisposable })
-    } else {
-        this.setState({ addressState: AddressState.lockedInput})
-    }
-
-
+    this.setState({ addressState: AddressState.lockedInput})
   }
 
   handleEditButton = () => {
-    const { isDisposable } = this.props
-
-    if (isDisposable) {
-        this.setState({ addressState: AddressState.editingInputDisposable })
-    } else {
-        this.setState({ addressState: AddressState.editingInput})
-    }
-
+    this.setState({ addressState: AddressState.editingInput})
   }
 
   handleChange = (e) => {
@@ -110,12 +85,7 @@ class Address extends React.Component {
     validateAddress(e.target.value)
     .then(() => {
       saveAddress(id, this.state.value)
-
-      if (isDisposable) {
-          this.setState({isValid: true, addressState: AddressState.lockedInputDisposable })
-      } else {
-          this.setState({isValid: true, addressState: AddressState.lockedInput})
-      }
+      this.setState({isValid: true, addressState: AddressState.lockedInput})
     })
     .catch(() => {
       this.setState({isValid: false})
@@ -142,31 +112,15 @@ class Address extends React.Component {
                   flatEdge={ false }
                 />
               </InputContainer>
-            </AddressInnerContainer>
-          </AddressContainer>
-        )
-
-      case AddressState.initialInputDisposable:
-        return (
-          <AddressContainer isdark={ this.props.isDark }>
-            <AddressInnerContainer>
-              <InputContainer>
-                <Input
-                  defaultValue={ this.state.value }
-                  placeholder="Input a valid Ethereum account address"
-                  onChange={ this.handleChange }
-                  isvalid={ isValid }
-                  isempty={ this.state.value.length < 1 }
-                  flatEdge={ false }
-                />
-              </InputContainer>
-              <ButtonContainer>
-                <DeleteButton
-                  onClick={() => this.props.handleDelete(this.props.id)}
-                >
-                  <DeleteSvg />
-                </DeleteButton>
-              </ButtonContainer>
+              { this.props.isDisposable &&
+                <ButtonContainer>
+                  <DeleteButton
+                    onClick={() => this.props.handleDelete(this.props.id)}
+                  >
+                    <DeleteSvg />
+                  </DeleteButton>
+                </ButtonContainer>
+              }
             </AddressInnerContainer>
           </AddressContainer>
         )
@@ -184,29 +138,13 @@ class Address extends React.Component {
                 >
                   <EditSvg />
                 </EditButton>
-              </ButtonContainer>
-            </AddressInnerContainer>
-          </AddressContainer>
-        )
-
-      case AddressState.lockedInputDisposable:
-        return (
-          <AddressContainer isdark={ this.props.isDark }>
-            <AddressInnerContainer>
-              <LockedInput>
-                <LockedInputText>{ this.props.value }</LockedInputText>
-              </LockedInput>
-              <ButtonContainer>
-                <EditButton
-                  onClick={ this.handleEditButton }
-                >
-                  <EditSvg />
-                </EditButton>
+                { this.props.isDisposable &&
                 <DeleteButton
                   onClick={() => this.props.handleDelete(this.props.id)}
                 >
                   <DeleteSvg />
                 </DeleteButton>
+              }
               </ButtonContainer>
             </AddressInnerContainer>
           </AddressContainer>
@@ -233,37 +171,13 @@ class Address extends React.Component {
                 >
                   Done
                 </InputConfirmButton>
-              </ButtonContainer>
-            </AddressInnerContainer>
-          </AddressContainer>
-        )
-
-      case AddressState.editingInputDisposable:
-        return (
-          <AddressContainer isdark={ this.props.isDark }>
-            <AddressInnerContainer>
-              <InputContainer>
-                <Input
-                  defaultValue={ this.state.value }
-                  placeholder="Input a valid Ethereum account address"
-                  onChange={ this.handleChange }
-                  isvalid={ isValid }
-                  isempty={ this.state.value.length < 1 }
-                  flatEdge={ true }
-                />
-              </InputContainer>
-              <ButtonContainer>
-                <InputConfirmButton
-                  onClick={ () => isValid ? this.handleSave() : '' }
-                  isvalid={ isValid }
-                >
-                  Done
-                </InputConfirmButton>
-                <DeleteButton
-                  onClick={() => this.props.handleDelete(this.props.id)}
-                >
-                  <DeleteSvg />
-                </DeleteButton>
+                {this.props.isDisposable &&
+                  <DeleteButton
+                    onClick={() => this.props.handleDelete(this.props.id)}
+                  >
+                    <DeleteSvg />
+                  </DeleteButton>
+                }
               </ButtonContainer>
             </AddressInnerContainer>
           </AddressContainer>
