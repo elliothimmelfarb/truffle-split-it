@@ -49,7 +49,7 @@ class AddressesPane extends React.Component {
           key={ id }
           id={ id }
           isDark={ isDark }
-          isDisposable= { isDisposable }
+          isDisposable={ isDisposable }
           value={ addresses[id].address }
           saveAddress={ saveAddress }
           handleDelete={ handleDelete }
