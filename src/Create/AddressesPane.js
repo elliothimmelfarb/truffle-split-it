@@ -8,6 +8,11 @@ import colors from '../styles/colors'
 import {
   BaseButtonBlue,
 } from '../components/TopLevelComponents'
+import {
+  CSSTransition,
+  TransitionGroup,
+} from 'react-transition-group';
+import './index.css';
 
 const Container = styled.div`
   flex: 1 0;
@@ -17,8 +22,6 @@ const Container = styled.div`
   border-radius: 5px;
 `
 const InnerContainer = styled.div`
-  border: 1px solid ${colors.address_bg_dark};
-  border-bottom: none;
 `
 const AddButton = BaseButtonBlue.extend`
   height: 50px;
@@ -44,6 +47,7 @@ class AddressesPane extends React.Component {
     return Object.keys(addresses).map( (id, index) => {
       isDark = !isDark
       return (
+        <CSSTransition timeout={100} key={id} classNames="fade">
         <Address
           key={ id }
           id={ id }
@@ -54,6 +58,7 @@ class AddressesPane extends React.Component {
           handleDelete={ handleDelete }
           validateAddress={ validateAddress }
         />
+      </CSSTransition>
       )
     })
   }
@@ -64,7 +69,9 @@ class AddressesPane extends React.Component {
     return (
       <Container>
         <InnerContainer>
+          <TransitionGroup className="address-list">
           { this.renderAddresses() }
+        </TransitionGroup>
         </InnerContainer>
         <AddButton
           onClick={ addAddress }
