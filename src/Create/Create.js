@@ -15,9 +15,9 @@ import {
 } from '../components/TopLevelComponents'
 
 const PublishButton = BaseButtonBlue.extend`
-  width: 20%;
+  width: 90px;
   height: 60%;
-  font-size: .9em;
+  font-size: .8em;
 `
 
 class Create extends Component {
@@ -111,8 +111,10 @@ class Create extends Component {
             !this.props.isConnected ?
               <NotConnectedPane>
                 Not Connected to the Ethereum Network
-              </NotConnectedPane> :
-              ''
+              </NotConnectedPane> : this.props.currentAccount == '' ?
+                <NotConnectedPane>
+                  No Account
+                </NotConnectedPane> : ''
           }
           <TopArea>
             <PageTitle>Create Split It Contract</PageTitle>

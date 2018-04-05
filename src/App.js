@@ -78,12 +78,12 @@ class App extends Component {
         const { web3 } = results
         const app = this
         web3.eth.getAccounts((err, accs) => {
-          if (!err && accs.length) {
+          if (!err ) {
             clearInterval(interval)
             app.setState({
               web3,
               isConnected: true,
-              currentAccount: accs[0]
+              currentAccount: accs.length ? accs[0] : '',
             })
             resolve()
           }
@@ -91,6 +91,7 @@ class App extends Component {
       }, 100)
     })
   }
+
 
   render() {
     return (
