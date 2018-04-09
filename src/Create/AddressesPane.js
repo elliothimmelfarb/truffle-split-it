@@ -12,7 +12,29 @@ import {
   CSSTransition,
   TransitionGroup,
 } from 'react-transition-group';
-import './index.css';
+
+import { injectGlobal } from 'styled-components';
+
+injectGlobal`
+.fade-enter {
+  height: 0px;
+}
+
+.fade-enter-active {
+  height: 60px;
+  transition: 100ms ease-in all;
+}
+
+.fade-exit {
+  height: 60px;
+}
+
+.fade-exit-active {
+  height:0px;
+  transition: 100ms ease-in all;
+}
+
+`;
 
 const Container = styled.div`
   flex: 1 0;
