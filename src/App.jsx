@@ -101,7 +101,7 @@ class App extends Component {
             </NavButtonContainer>
           </Header>
           <RoutesContainer>
-            <Route exact path="/" component={About} />
+            <Route exact path="/" render={() => <About />} />
             <Route path="/create" render={() => <Create />} />
             <Route path="/view" render={() => <View />} />
           </RoutesContainer>

@@ -14,10 +14,10 @@ const removeAddress = (id) => ({
   type: REMOVE_ADDRESS,
 })
 
-const TOGGLE_ADDRESS_LOCKED_STATE = 'create/TOGGLE_ADDRESS_LOCKED_STATE'
-const toggleAddressLockedState = (id) => ({
+const UNLOCK_ADDRESS = 'create/UNLOCK_ADDRESS'
+const unlockAddress = (id) => ({
   id,
-  type: TOGGLE_ADDRESS_LOCKED_STATE,
+  type: UNLOCK_ADDRESS,
 })
 
 const UPDATE_ADDRESS_VALUE = 'create/UPDATE_ADDRESS_VALUE'
@@ -48,6 +48,25 @@ function validateAccountAddress(id, address) {
     const {web3} = state.app
     if (web3.utils.isAddress(address)) {
       web3.eth.getCode(address, (err, res) => {
+        if (err) {
+          return dispatch(addressIsNotValid(id))
+        }
+        if (res.length > 3) return dispatch(addressIsNotValid(id))
+        dispatch(addressIsValid(id))
+      })
+    } else {
+      dispatch(addressIsNotValid(id))
+    }
+  }
+}
+
+function updateAddressAndValidate(id, value) {
+  return (dispatch, getState) => {
+    const state = getState()
+    const {web3} = state.app
+    dispatch(updateAddressValue(id, value))
+    if (web3.utils.isAddress(value)) {
+      web3.eth.getCode(value, (err, res) => {
         if (err) return dispatch(addressIsNotValid(id))
         if (res.length > 3) return dispatch(addressIsNotValid(id))
         dispatch(addressIsValid(id))
@@ -64,24 +83,32 @@ function validateAccountAddress(id, address) {
 export const actions = {
   addAddress,
   removeAddress,
-  toggleAddressLockedState,
-  updateAddressValue,
+  unlockAddress,
+  updateAddressAndValidate,
   validateAccountAddress,
+}
+
+
+export const addressStates = {
+  INITIAL_INPUT: 'INITIAL_INPUT',
+  LOCKED_INPUT: 'LOCKED_INPUT',
+  EDITING_INPUT: 'EDITING_INPUT'
 }
 
 
 // INITIAL STATE
 
 const initialState = {
+  isDisposable: false,
   addresses: {
     [shortid.generate()]: {
       value: '',
-      isLocked: false,
+      addressState: addressStates.INITIAL_INPUT,
       isValid: false,
     },
     [shortid.generate()]: {
       value: '',
-      isLocked: false,
+      addressState: addressStates.INITIAL_INPUT,
       isValid: false,
     },
   }
@@ -97,21 +124,22 @@ export default (state = initialState, action) => {
         ...state.addresses,
         [shortid.generate()]: {
           value: '',
-          isLocked: false,
+          addressState: addressStates.INITIAL_INPUT,
           isValid: false,
         }
       }
-      return Object.assign({}, state, {addresses})
+      const isDisposable = Object.keys(addresses).length > 2 ? true : false
+      return Object.assign({}, state, {addresses, isDisposable})
     }
     case REMOVE_ADDRESS: {
       const addresses = {...state.addresses}
-      if (Object.keys(addresses).length < 3) return state
+      const isDisposable = Object.keys(addresses).length > 2 ? true : false
       delete addresses[action.id]
-      return Object.assign({}, state, {addresses})
+      return Object.assign({}, state, {addresses, isDisposable})
     }
-    case TOGGLE_ADDRESS_LOCKED_STATE: {
+    case UNLOCK_ADDRESS: {
       const addresses = {...state.addresses}
-      addresses[action.id].isLocked = !addresses[action.id].isLocked
+      addresses[action.id].addressState = addressStates.EDITING_INPUT
       return Object.assign({}, state, {addresses})
     }
     case UPDATE_ADDRESS_VALUE: {
@@ -122,11 +150,13 @@ export default (state = initialState, action) => {
     case ADDRESS_IS_VALID: {
       const addresses = {...state.addresses}
       addresses[action.id].isValid = true
+      addresses[action.id].addressState = addressStates.LOCKED_INPUT
       return Object.assign({}, state, {addresses})
     }
     case ADDRESS_IS_NOT_VALID: {
       const addresses = {...state.addresses}
       addresses[action.id].isValid = false
+      addresses[action.id].addressState = addressStates.EDITING_INPUT
       return Object.assign({}, state, {addresses})
     }
     default: {
