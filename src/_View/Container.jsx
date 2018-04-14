@@ -33,6 +33,7 @@ const DepositButton = BaseButtonBlue.extend`
 class View extends Component {
   static propTypes = {
     isConnected: PropTypes.bool.isRequired,
+    isSearching: PropTypes.bool.isRequired,
   }
 
   handleSearch = (targetAddress) => {
@@ -81,7 +82,7 @@ class View extends Component {
             !isConnected ?
               <NotConnectedPane>
                 Not Connected to the Ethereum Network
-              </NotConnectedPane> : this.props.currentAccount == '' ?
+              </NotConnectedPane> : this.props.currentAccount === '' ?
                 <NotConnectedPane>
                   No Account
                 </NotConnectedPane> : ''

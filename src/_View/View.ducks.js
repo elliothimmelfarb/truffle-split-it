@@ -1,4 +1,4 @@
-
+import SplitIt from '../utils/splitit'
 
 
 // CONSTANT AND ACTION CREATOR PAIRS

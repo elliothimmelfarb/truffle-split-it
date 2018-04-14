@@ -1,4 +1,5 @@
 import shortid from 'shortid'
+import SplitIt from '../utils/splitit'
 
 
 // CONSTANT AND ACTION CREATOR PAIRS
@@ -42,24 +43,6 @@ const addressIsNotValid = (id) => ({
 
 // THUNK ACTIONS
 
-function validateAccountAddress(id, address) {
-  return (dispatch, getState) => {
-    const state = getState()
-    const {web3} = state.app
-    if (web3.utils.isAddress(address)) {
-      web3.eth.getCode(address, (err, res) => {
-        if (err) {
-          return dispatch(addressIsNotValid(id))
-        }
-        if (res.length > 3) return dispatch(addressIsNotValid(id))
-        dispatch(addressIsValid(id))
-      })
-    } else {
-      dispatch(addressIsNotValid(id))
-    }
-  }
-}
-
 function updateAddressAndValidate(id, value) {
   return (dispatch, getState) => {
     const state = getState()
@@ -77,6 +60,22 @@ function updateAddressAndValidate(id, value) {
   }
 }
 
+function initiatePublish() {
+  return (dispatch, getState) => {
+    const state = getState()
+    const {web3, currentAccount} = state.app
+    const addresses = Object.keys(state.create.addresses).map(id =>
+      state.create.addresses[id].value
+    )
+    const splitit = new SplitIt(web3, currentAccount)
+
+    splitit.publish(addresses)
+    .then(newAddress => {
+      alert(`Your new SplitIt contract address is: ${newAddress} (copy and save it!)`)
+    }).catch(err => console.log(err))
+  }
+}
+
 
 // ACTION EXPORTS
 
@@ -85,7 +84,7 @@ export const actions = {
   removeAddress,
   unlockAddress,
   updateAddressAndValidate,
-  validateAccountAddress,
+  initiatePublish
 }
 
 
