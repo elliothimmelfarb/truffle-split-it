@@ -98,10 +98,11 @@ const mapStateToProps = state => ({
   web3: state.app.web3,
   isConnected: state.app.isConnected,
   currentAccount: state.app.currentAccount,
+  addresses: state.create.addresses,
 })
 
 const mapDispatchToProps = dispatch => ({
-  
+
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Create)
