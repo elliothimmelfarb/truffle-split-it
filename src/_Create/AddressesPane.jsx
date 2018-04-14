@@ -39,23 +39,27 @@ class AddressesPane extends React.Component {
     addresses: PropTypes.object.isRequired,
   }
 
+  shouldComponentUpdate = nextProps => {
+    const { addresses } = this.props
+
+    return (
+      Object.keys(addresses).length !== Object.keys(nextProps.addresses).length
+    )
+  }
+
   renderAddresses = () => {
-    const { addresses, saveAddress } = this.props
+    const { addresses } = this.props
     let isDark = false;
-    let isDisposable = Object.keys(addresses).length > 2;
-    return Object.keys(addresses).map( (id, index) => {
+    return Object.keys(addresses).map(id => {
       isDark = !isDark
       return (
-        <CSSTransition timeout={100} key={id} classNames="fade">
+        // <CSSTransition timeout={100} key={id} classNames="fade">
           <Address
             key={ id }
             id={ id }
             isDark={ isDark }
-            isDisposable={ isDisposable }
-            value={ addresses[id].address }
-            saveAddress={ saveAddress }
-        />
-      </CSSTransition>
+          />
+        // </CSSTransition>
       )
     })
   }
@@ -63,12 +67,13 @@ class AddressesPane extends React.Component {
   render() {
     const { addAddress, addresses } = this.props
     const addressCount = Object.keys(addresses).length
+    console.log('render')
     return (
       <Container>
         <InnerContainer>
-          <TransitionGroup className="address-list">
+          {/* <TransitionGroup className="address-list"> */}
           { this.renderAddresses() }
-        </TransitionGroup>
+          {/* </TransitionGroup> */}
         </InnerContainer>
         <AddButton
           onClick={ addAddress }

@@ -133,8 +133,8 @@ export default (state = initialState, action) => {
     }
     case REMOVE_ADDRESS: {
       const addresses = {...state.addresses}
-      const isDisposable = Object.keys(addresses).length > 2 ? true : false
       delete addresses[action.id]
+      const isDisposable = Object.keys(addresses).length > 2 ? true : false
       return Object.assign({}, state, {addresses, isDisposable})
     }
     case UNLOCK_ADDRESS: {

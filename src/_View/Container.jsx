@@ -124,7 +124,8 @@ class View extends Component {
 
 const mapStateToProps = state => ({
   isConnected: state.app.isConnected,
-  addressList: state.view.addressList
+  addressList: state.view.addressList,
+  isSearching: state.view.isSearching,
 })
 
 const mapDispatchToProps = dispatch => ({

@@ -13,7 +13,6 @@ import {
   InputContainer,
   ButtonContainer,
   Input,
-  InputConfirmButton,
   LockedInput,
   LockedInputText,
 } from '../components/AddressInputComponents.styled'
@@ -48,7 +47,7 @@ const DeleteButton = LockedInputButton.extend`
 class Address extends React.Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
+    value: PropTypes.string,
     addressState: PropTypes.string.isRequired,
     isValid: PropTypes.bool.isRequired,
     removeAddress: PropTypes.func.isRequired,
@@ -58,13 +57,17 @@ class Address extends React.Component {
     isDisposable: PropTypes.bool.isRequired,
   }
 
+  static defaultProps = {
+    value: '',
+  }
+
   shouldComponentUpdate = nextProps => {
-    const { isValid, value, isLocked, addressState } = this.props
+    const { isValid, value, addressState, isDisposable } = this.props
     return (
       isValid !== nextProps.isValid ||
       value !== nextProps.value ||
-      isLocked !== nextProps.isLocked ||
-      addressState !== nextProps.addressState
+      addressState !== nextProps.addressState ||
+      isDisposable !== nextProps.isDisposable
     )
   }
 
@@ -88,56 +91,62 @@ class Address extends React.Component {
     switch(addressState) {
 
       case addressStates.INITIAL_INPUT:
-      return (
-        <AddressContainer isdark={ isDark }>
-          <AddressInnerContainer>
-            <InputContainer>
-              <Input
-                value={ value }
-                placeholder="Input a valid Ethereum account address"
-                disabled={ isLocked }
-                onChange={ this.handleUpdateValue }
-                isvalid={ isValid }
-                isempty={ value.length < 1 }
-              />
-            </InputContainer>
-            <ButtonContainer>
-              <InputConfirmButton
-                onClick={ () => isValid ? unlockAddress(id) : '' }
-                isvalid={ isValid }
-              >
-                Save
-              </InputConfirmButton>
-            </ButtonContainer>
-          </AddressInnerContainer>
-        </AddressContainer>
-      )
+        return (
+          <AddressContainer isdark={ isDark }>
+            <AddressInnerContainer>
+              <InputContainer>
+                <Input
+                  value={ value }
+                  placeholder="Input a valid Ethereum account address"
+                  disabled={ isLocked }
+                  onChange={ this.handleUpdateValue }
+                  isvalid={ isValid }
+                  isempty={ value.length < 1 }
+                />
+              </InputContainer>
+              <ButtonContainer>
+                { this.props.isDisposable &&
+                  <ButtonContainer>
+                    <DeleteButton
+                      onClick={() => removeAddress(id)}
+                    >
+                      <DeleteSvg />
+                    </DeleteButton>
+                  </ButtonContainer>
+                }
+              </ButtonContainer>
+            </AddressInnerContainer>
+          </AddressContainer>
+        )
 
       case addressStates.EDITING_INPUT:
-      return (
-        <AddressContainer isdark={ isDark }>
-          <AddressInnerContainer>
-            <InputContainer>
-              <Input
-                value={ value }
-                placeholder="Input a valid Ethereum account address"
-                disabled={ isLocked }
-                onChange={ this.handleUpdateValue }
-                isvalid={ isValid }
-                isempty={ value.length < 1 }
-              />
-            </InputContainer>
-            <ButtonContainer>
-              <InputConfirmButton
-                onClick={ () => isValid ? unlockAddress(id) : '' }
-                isvalid={ isValid }
-              >
-                Save
-              </InputConfirmButton>
-            </ButtonContainer>
-          </AddressInnerContainer>
-        </AddressContainer>
-      )
+        return (
+          <AddressContainer isdark={ isDark }>
+            <AddressInnerContainer>
+              <InputContainer>
+                <Input
+                  value={ value }
+                  placeholder="Input a valid Ethereum account address"
+                  disabled={ isLocked }
+                  onChange={ this.handleUpdateValue }
+                  isvalid={ isValid }
+                  isempty={ value.length < 1 }
+                />
+              </InputContainer>
+              <ButtonContainer>
+                { this.props.isDisposable &&
+                  <ButtonContainer>
+                    <DeleteButton
+                      onClick={() => removeAddress(id)}
+                    >
+                      <DeleteSvg />
+                    </DeleteButton>
+                  </ButtonContainer>
+                }
+              </ButtonContainer>
+            </AddressInnerContainer>
+          </AddressContainer>
+        )
 
       case addressStates.LOCKED_INPUT:
         return (
@@ -152,11 +161,13 @@ class Address extends React.Component {
                 >
                   <EditSvg />
                 </EditButton>
-                <DeleteButton
-                  onClick={() => removeAddress(id)}
-                >
-                  <DeleteSvg />
-                </DeleteButton>
+                { this.props.isDisposable &&
+                  <DeleteButton
+                    onClick={() => removeAddress(id)}
+                  >
+                    <DeleteSvg />
+                  </DeleteButton>
+                }
               </ButtonContainer>
             </AddressInnerContainer>
           </AddressContainer>
