@@ -6,7 +6,7 @@ import SplitIt from '../utils/splitit'
 import AddressSearch from './AddressSearch'
 import ViewAddressesPane from './ViewAddressesPane'
 import DepositModal from './DepositModal'
-// import WithdrawModal from './WithdrawModal'
+import WithdrawModal from './WithdrawModal'
 import {
   Container,
   PaddingContainer,
@@ -57,7 +57,7 @@ class View extends Component {
     return (
       <Container>
         <DepositModal />
-        {/* <WithdrawModal /> */}
+        <WithdrawModal />
         <PaddingContainer>
           {
             !isConnected ?

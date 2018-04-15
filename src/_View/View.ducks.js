@@ -67,13 +67,21 @@ const updateSearchValue = (value) => ({
   type: UPDATE_SEARCH_VALUE,
 })
 
+const DEPOSIT_SUCCESS = 'view/DEPOSIT_SUCCESS'
+const depositSuccess = () => ({
+  type: DEPOSIT_SUCCESS,
+})
+
+const WITHDRAW_SUCCESS = 'view/WITHDRAW_SUCCESS'
+const withdrawSuccess = () => ({
+  type: WITHDRAW_SUCCESS,
+})
+
 
 // THUNK ACTIONS
 function updateAndValidateSearchValue(address) {
   return (dispatch, getState) => {
-
     dispatch(updateSearchValue(address))
-
     const {web3} = getState().app
     if (web3.utils.isAddress(address)) {
       web3.eth.getCode(address, (err, res) => {
@@ -90,16 +98,10 @@ function updateAndValidateSearchValue(address) {
 function search() {
   return (dispatch, getState) => {
     dispatch(searchInitiated())
-
     const state = getState()
-
     const { web3, currentAccount } = state.app
     const { targetAddress } = state.view
-
     const splitit = new SplitIt(web3, currentAccount)
-
-    console.log(targetAddress)
-
     splitit.search(targetAddress)
     .then((addressList) => {
       dispatch(searchSuccess(addressList))
@@ -112,11 +114,29 @@ function deposit() {
     const state = getState()
     const {web3, currentAccount} = state.app
     const {depositAmount, tipAmount, targetAddress} = state.view
-    console.log({depositAmount, tipAmount})
     const amount = parseFloat(tipAmount) + parseFloat(depositAmount)
     const splitit = new SplitIt(web3, currentAccount)
     splitit.deposit(targetAddress, amount)
-    .then(res => console.log(res))
+    .then(res => {
+      alert(`Deposit of ${amount} ether to ${targetAddress} was successful`)
+      dispatch(depositSuccess())
+    })
+    .catch(err => alert(`Deposit Failed: ${err}`))
+  }
+}
+
+function withdraw() {
+  return (dispatch, getState) => {
+    const state = getState()
+    const {web3, currentAccount} = state.app
+    const {tipAmount, targetAddress} = state.view
+    const splitit = new SplitIt(web3, currentAccount)
+    splitit.withdraw(targetAddress, tipAmount)
+    .then(res => {
+      alert('Funds withdrawn')
+      dispatch(withdrawSuccess())
+    })
+    .catch(err => alert(`Withdraw failed: ${err}`))
   }
 }
 
@@ -133,6 +153,7 @@ export const actions = {
   openWithdrawModal,
   closeWithdrawModal,
   deposit,
+  withdraw,
 }
 
 
@@ -217,6 +238,19 @@ export default (state = initialState, action) => {
     case UPDATE_SEARCH_VALUE: {
       return Object.assign({}, state, {
         targetAddress: action.value,
+      })
+    }
+    case DEPOSIT_SUCCESS: {
+      return Object.assign({}, state, {
+        depositAmount: 0.0,
+        tipAmount: 0.0,
+        depositModalIsOpen: false,
+      })
+    }
+    case WITHDRAW_SUCCESS: {
+      return Object.assign({}, state, {
+        tipAmount: 0.0,
+        withdrawModalIsOpen: false,
       })
     }
     default: {

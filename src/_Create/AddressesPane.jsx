@@ -67,7 +67,6 @@ class AddressesPane extends React.Component {
   render() {
     const { addAddress, addresses } = this.props
     const addressCount = Object.keys(addresses).length
-    console.log('render')
     return (
       <Container>
         <InnerContainer>
