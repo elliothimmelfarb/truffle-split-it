@@ -47,40 +47,27 @@ class DepositModal extends React.Component {
   static propTypes = {
     modalIsOpen: PropTypes.bool.isRequired,
     closeModal: PropTypes.func.isRequired,
-    // targetAddress: PropTypes.string.isRequired,
-    // web3: PropTypes.object.isRequired,
-    // currentAccount: PropTypes.string.isRequired,
-    depositAmount: PropTypes.number.isRequired,
-    depositTipAmount: PropTypes.number.isRequired,
+    depositAmount: PropTypes.number,
+    tipAmount: PropTypes.number,
     updateDepositAmount: PropTypes.func.isRequired,
-    updateDepositTipAmount: PropTypes.func.isRequired,
+    updateTipAmount: PropTypes.func.isRequired,
+    deposit: PropTypes.func.isRequired,
   }
 
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      tipAmount: 0,
-      depositAmount: 0,
-    }
+  static defaultProps = {
+    tipAmount: 0.0,
+    depositAmount: 0.0,
   }
-
-  // handleDeposit = () => {
-  //   const { web3, currentAccount, targetAddress } = this.props
-  //   const { tipAmount, depositAmount } = this.state
-  //   const amount = parseFloat(tipAmount) + parseFloat(depositAmount)
-  //   const splitit = new SplitIt(web3, currentAccount)
-  //   splitit.deposit(targetAddress, amount)
-  // }
 
   render() {
     const {
       modalIsOpen,
       closeModal,
       depositAmount,
-      depositTipAmount,
+      tipAmount,
       updateDepositAmount,
-      updateDepositTipAmount,
+      updateTipAmount,
+      deposit,
     } = this.props
     return (
       <Modal
@@ -95,8 +82,8 @@ class DepositModal extends React.Component {
           <InputContainer>
             <ModifiedInput
               type="number"
-              onChange={e => updateDepositTipAmount(e.target.value)}
-              value={depositTipAmount}
+              onChange={e => updateTipAmount(parseFloat(e.target.value))}
+              placeholder={tipAmount}
               isvalid
             />
             ETH
@@ -111,7 +98,7 @@ class DepositModal extends React.Component {
           <InputContainer>
             <ModifiedInput
               type="number"
-              onChange={e => updateDepositAmount(e.target.value)}
+              onChange={e => updateDepositAmount(parseFloat(e.target.value))}
               placeholder={depositAmount}
               isvalid
             />
@@ -120,18 +107,18 @@ class DepositModal extends React.Component {
         </DisplayContainer>
         <br />
         <DisplayContainer>
-          Tip Amount: {depositTipAmount} ETH
+          Tip Amount: {tipAmount} ETH
         </DisplayContainer>
         <DisplayContainer>
           Deposit Amount: {depositAmount} ETH
         </DisplayContainer>
         <DisplayContainer>
           Total: {
-            parseFloat(depositAmount) + parseFloat(depositTipAmount)
+            parseFloat(depositAmount) + parseFloat(tipAmount)
           } ETH
         </DisplayContainer>
         <DepositButton
-          onClick={this.handleDeposit}
+          onClick={deposit}
         >
           Initiatate Deposit
         </DepositButton>
@@ -144,16 +131,15 @@ class DepositModal extends React.Component {
 const mapStateToProps = state => ({
   modalIsOpen: state.view.depositModalIsOpen,
   targetAddress: state.view.targetAddress,
-  web3: state.app.web3,
-  currentAccount: state.app.currentAccount,
   depositAmount: state.view.depositAmount,
-  depositTipAmount: state.view.depositTipAmount,
+  tipAmount: state.view.tipAmount,
 })
 
 const mapDispatchToProps = dispatch => ({
   closeModal: () => dispatch(actions.closeDepositModal()),
   updateDepositAmount: (amount) => dispatch(actions.updateDepositAmount(amount)),
-  updateDepositTipAmount: (amount) => dispatch(actions.updateDepositTipAmount(amount)),
+  updateTipAmount: (amount) => dispatch(actions.updateTipAmount(amount)),
+  deposit: () => dispatch(actions.deposit())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DepositModal)

@@ -6,6 +6,7 @@ import SplitIt from '../utils/splitit'
 import AddressSearch from './AddressSearch'
 import ViewAddressesPane from './ViewAddressesPane'
 import DepositModal from './DepositModal'
+// import WithdrawModal from './WithdrawModal'
 import {
   Container,
   PaddingContainer,
@@ -34,28 +35,6 @@ class View extends Component {
   static propTypes = {
     isConnected: PropTypes.bool.isRequired,
     isSearching: PropTypes.bool.isRequired,
-    search: PropTypes.func.isRequired,
-  }
-
-  handleSearch = (targetAddress) => {
-
-    this.setState({
-      isSearching: true,
-    })
-
-    const { web3, currentAccount } = this.props
-
-    const splitit = new SplitIt(web3, currentAccount)
-
-    splitit.search(targetAddress)
-    .then((addressList) => {
-      this.setState({
-        addressList,
-        isSearching: false,
-        searchSuccessful: true,
-        targetContractAddress: targetAddress,
-      })
-    }).catch(err => console.log('err:', err))
   }
 
   handleWithdraw = () => {
@@ -78,6 +57,7 @@ class View extends Component {
     return (
       <Container>
         <DepositModal />
+        {/* <WithdrawModal /> */}
         <PaddingContainer>
           {
             !isConnected ?
@@ -88,14 +68,9 @@ class View extends Component {
                   No Account
                 </NotConnectedPane> : ''
           }
-          <AddressSearch
-            isSearching={this.state.isSearching}
-            searchSuccessful={this.state.searchSuccessful}
-            handleSearch={this.handleSearch}
-            validateAddress={this.validateAddress}
-          />
+          <AddressSearch />
           {
-            addressList.length ?
+            addressList && addressList.length ?
               <TransparentContainer>
                 <AddressInnerContainer>
                   <InputContainer>
@@ -128,11 +103,11 @@ const mapStateToProps = state => ({
   isConnected: state.app.isConnected,
   addressList: state.view.addressList,
   isSearching: state.view.isSearching,
+  targetAddress: state.view.targetAddress
 })
 
 const mapDispatchToProps = dispatch => ({
   openDepositModal: () => dispatch(actions.openDepositModal()),
-  search: (address) => dispatch(actions.search(address)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(View)

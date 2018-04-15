@@ -6,10 +6,10 @@ contract EventTester {
   event SaidHello();
 
   function () public {
-    Created();
+    emit Created();
   }
 
   function sayHello() public {
-    SaidHello();
+    emit SaidHello();
   }
 }

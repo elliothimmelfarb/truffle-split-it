@@ -12,6 +12,7 @@ import {
 import {
   BaseButtonBlue
 } from '../components/TopLevelComponents.styled'
+import {actions} from './View.ducks'
 
 const WithdrawButton = BaseButtonBlue.extend`
   padding: 5px;
@@ -22,7 +23,8 @@ class Address extends React.Component {
   static propTypes = {
     address: PropTypes.string.isRequired,
     isDark: PropTypes.bool,
-    handleWithdraw: PropTypes.func.isRequired,
+    openWithdrawModal: PropTypes.func.isRequired,
+    currentAccount: PropTypes.string.isRequired,
   }
 
   static defaultProps = {
@@ -31,8 +33,17 @@ class Address extends React.Component {
   }
 
   render() {
+    const {
+      isDark,
+      openWithdrawModal,
+      currentAccount,
+      address,
+    } = this.props
+
+    const withdrawable = currentAccount.toLowerCase() === address.toLowerCase()
+
     return (
-      <AddressContainer isdark={this.props.isDark}>
+      <AddressContainer isdark={isDark}>
         <AddressInnerContainer>
           <LockedInput>
             <LockedInputText>
@@ -41,9 +52,10 @@ class Address extends React.Component {
           </LockedInput>
           <ButtonContainer>
             {
-              this.props.isMe ?
-                <WithdrawButton onClick={this.props.handleWithdraw}>Withdraw</WithdrawButton> :
-                ''
+              withdrawable &&
+              <WithdrawButton onClick={openWithdrawModal}>
+                Withdraw
+              </WithdrawButton>
             }
           </ButtonContainer>
         </AddressInnerContainer>
@@ -56,8 +68,8 @@ const mapStateToProps = state => ({
   currentAccount: state.app.currentAccount
 })
 
-// const mapDispatchToProps = dispatch => ({
-//   handleWithdraw: () => dispatch(action)
-// })
+const mapDispatchToProps = dispatch => ({
+  openWithdrawModal: () => dispatch(actions.openWithdrawModal())
+})
 
-export default connect(mapStateToProps)(Address)
+export default connect(mapStateToProps, mapDispatchToProps)(Address)

@@ -69,8 +69,10 @@ function initiatePublish() {
     )
     const splitit = new SplitIt(web3, currentAccount)
 
+    console.log(addresses)
     splitit.publish(addresses)
     .then(newAddress => {
+      console.log(newAddress)
       alert(`Your new SplitIt contract address is: ${newAddress} (copy and save it!)`)
     }).catch(err => console.log(err))
   }
@@ -101,12 +103,12 @@ const initialState = {
   isDisposable: false,
   addresses: {
     [shortid.generate()]: {
-      value: '',
+      value: '0x627306090abab3a6e1400e9345bc60c78a8bef57',
       addressState: addressStates.INITIAL_INPUT,
       isValid: false,
     },
     [shortid.generate()]: {
-      value: '',
+      value: '0xf17f52151ebef6c7334fad080c5704d77216b732',
       addressState: addressStates.INITIAL_INPUT,
       isValid: false,
     },

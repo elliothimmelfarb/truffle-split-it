@@ -23,15 +23,13 @@ class AddressSearch extends React.Component {
   static propTypes = {
     targetAddress: PropTypes.string.isRequired,
     isSearching: PropTypes.bool.isRequired,
-    searchSuccessful: PropTypes.bool.isRequired,
-    validateAddress: PropTypes.func.isRequired,
     search: PropTypes.func.isRequired,
     updateAndValidate: PropTypes.func.isRequired,
     searchAddressIsValid: PropTypes.bool.isRequired,
   }
 
   handleSearch = () => {
-    this.props.search(this.state.targetAddress)
+    this.props.search()
   }
 
   handleChange = (e) => {
@@ -47,7 +45,7 @@ class AddressSearch extends React.Component {
             {
               <Input
                 placeholder="Address of Existing Split It Contract"
-                value={this.props.targetAddress}
+                defaultValue={this.props.targetAddress}
                 onChange={ this.handleChange }
                 isvalid={ searchAddressIsValid }
                 isempty={ targetAddress.length < 1 }
