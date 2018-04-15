@@ -25,43 +25,21 @@ class AddressSearch extends React.Component {
     isSearching: PropTypes.bool.isRequired,
     searchSuccessful: PropTypes.bool.isRequired,
     validateAddress: PropTypes.func.isRequired,
-  }
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      targetAddress: '',
-      addressLocked: false,
-      isValid: true,
-    }
-  }
-
-  componentWillReceiveProps = (nextProps) => {
-    if (nextProps.searchSuccessful) this.setState({addressLocked: true})
+    search: PropTypes.func.isRequired,
+    updateAndValidate: PropTypes.func.isRequired,
+    searchAddressIsValid: PropTypes.bool.isRequired,
   }
 
   handleSearch = () => {
-    this.props.handleSearch(this.state.targetAddress)
+    this.props.search(this.state.targetAddress)
   }
 
   handleChange = (e) => {
-    const { validateAddress } = this.props
-    this.setState({targetAddress: e.target.value})
-    if (e.target.value.length < 1) {
-      this.setState({isValid: true})
-    } else {
-      validateAddress(e.target.value)
-      .then(() => {
-        this.setState({isValid: true})
-      })
-      .catch(() => {
-        this.setState({isValid: false})
-      })
-    }
+    this.props.updateAndValidate(e.target.value)
   }
 
   render() {
-    const {isValid, targetAddress} = this.state
+    const {searchAddressIsValid, targetAddress} = this.props
     return (
       <Container>
         <AddressInnerContainer>
@@ -69,9 +47,9 @@ class AddressSearch extends React.Component {
             {
               <Input
                 placeholder="Address of Existing Split It Contract"
-                value={this.state.targetAddress}
+                value={this.props.targetAddress}
                 onChange={ this.handleChange }
-                isvalid={ isValid }
+                isvalid={ searchAddressIsValid }
                 isempty={ targetAddress.length < 1 }
                 flatEdge={ true }
               />
@@ -80,8 +58,8 @@ class AddressSearch extends React.Component {
           <ButtonContainer>
             {
               <SearchButton
-                onClick={() => isValid ? this.handleSearch() : ''}
-                isvalid={ isValid }
+                onClick={() => searchAddressIsValid ? this.handleSearch() : ''}
+                isvalid={ searchAddressIsValid }
               >
                 Search
               </SearchButton>
@@ -98,11 +76,12 @@ const mapStateToProps = state => ({
   addressList: state.view.addressList,
   searchAddressIsValid: state.view.searchAddressIsValid,
   searchIsLocked: state.view.searchIsLocked,
-
+  isSearching: state.view.isSearching,
 })
 
 const mapDispatchToProps = dispatch => ({
-  openDepositModal: () => dispatch(actions.openDepositModal()),
+  search: (address) => dispatch(actions.search(address)),
+  updateAndValidate: (val) => dispatch(actions.updateAndValidateSearchValue(val)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddressSearch)

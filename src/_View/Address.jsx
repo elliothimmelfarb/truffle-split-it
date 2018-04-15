@@ -1,4 +1,5 @@
 import React from 'react'
+import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 
 import {
@@ -20,7 +21,6 @@ const WithdrawButton = BaseButtonBlue.extend`
 class Address extends React.Component {
   static propTypes = {
     address: PropTypes.string.isRequired,
-    isMe: PropTypes.bool,
     isDark: PropTypes.bool,
     handleWithdraw: PropTypes.func.isRequired,
   }
@@ -52,4 +52,12 @@ class Address extends React.Component {
   }
 }
 
-export default Address
+const mapStateToProps = state => ({
+  currentAccount: state.app.currentAccount
+})
+
+// const mapDispatchToProps = dispatch => ({
+//   handleWithdraw: () => dispatch(action)
+// })
+
+export default connect(mapStateToProps)(Address)

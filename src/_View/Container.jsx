@@ -34,6 +34,7 @@ class View extends Component {
   static propTypes = {
     isConnected: PropTypes.bool.isRequired,
     isSearching: PropTypes.bool.isRequired,
+    search: PropTypes.func.isRequired,
   }
 
   handleSearch = (targetAddress) => {
@@ -131,6 +132,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   openDepositModal: () => dispatch(actions.openDepositModal()),
+  search: (address) => dispatch(actions.search(address)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(View)

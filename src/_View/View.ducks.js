@@ -35,10 +35,33 @@ const searchAddressIsNotValid = () => ({
   type: SEARCH_ADDRESS_IS_NOT_VALID,
 })
 
+const SEARCH_INITIATED = 'view/SEARCH_INITIATED'
+const searchInitiated = () => ({
+  type: SEARCH_INITIATED,
+})
+
+const SEARCH_SUCCESS = 'view/SEARCH_SUCCESS'
+const searchSuccess = (addressList) => ({
+  addressList,
+  type: SEARCH_SUCCESS,
+})
+
+const SEARCH_FAILURE = 'view/SEARCH_FAILURE'
+const searchFailure = () => ({
+  type: SEARCH_FAILURE,
+})
+
+const UPDATE_SEARCH_VALUE = 'view/UPDATE_SEARCH_VALUE'
+const updateSearchValue = (value) => ({
+  value,
+  type: UPDATE_SEARCH_VALUE,
+})
+
 
 // THUNK ACTIONS
-function validateContractAddress(address) {
+function updateAndValidateSearchValue(address) {
   return (dispatch, getState) => {
+    dispatch(updateSearchValue(address))
     const web3 = getState().app.web3
     if (web3.utils.isAddress(address)) {
       web3.eth.getCode(address, (err, res) => {
@@ -52,6 +75,21 @@ function validateContractAddress(address) {
   }
 }
 
+function search(address) {
+  return (dispatch, getState) => {
+    dispatch(searchInitiated())
+
+    const { web3, currentAccount } = this.getState().app
+
+    const splitit = new SplitIt(web3, currentAccount)
+
+    splitit.search(address)
+    .then((addressList) => {
+      dispatch(searchSuccess(addressList))
+    }).catch(err => dispatch(searchFailure(err)))
+  }
+}
+
 
 // ACTION EXPORTS
 
@@ -60,7 +98,8 @@ export const actions = {
   closeDepositModal,
   updateDepositAmount,
   updateDepositTipAmount,
-  validateContractAddress,
+  updateAndValidateSearchValue,
+  search,
 }
 
 
@@ -104,12 +143,31 @@ export default (state = initialState, action) => {
     }
     case SEARCH_ADDRESS_IS_VALID: {
       return Object.assign({}, state, {
-        searchAddressIsValid: true
+        searchAddressIsValid: true,
+        searchIsLocked: true,
       })
     }
     case SEARCH_ADDRESS_IS_NOT_VALID: {
       return Object.assign({}, state, {
         searchAddressIsValid: false
+      })
+    }
+    case SEARCH_INITIATED: {
+      return Object.assign({}, state, {
+        isSearching: true
+      })
+    }
+    case SEARCH_SUCCESS: {
+      return Object.assign({}, state, {
+        addressList: action.addressList,
+        isSearching: false,
+        addressIsLocked: true,
+      })
+    }
+    case SEARCH_FAILURE: {
+      return Object.assign({}, state, {
+        addressList: action.addressList,
+        isSearching: false,
       })
     }
     default: {
