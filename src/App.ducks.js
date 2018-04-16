@@ -49,7 +49,6 @@ function connectToNet() {
 
 export const actions = {
   connectToNet,
-
 }
 
 
