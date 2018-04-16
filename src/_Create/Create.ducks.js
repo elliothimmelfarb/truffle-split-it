@@ -4,6 +4,16 @@ import SplitIt from '../utils/splitit'
 
 // CONSTANT AND ACTION CREATOR PAIRS
 
+const OPEN_PUBLISH_MODAL = 'create/OPEN_PUBLISH_MODAL'
+const openPublishModal = () => ({
+  type: OPEN_PUBLISH_MODAL,
+})
+
+const CLOSE_PUBLISH_MODAL = 'create/CLOSE_PUBLISH_MODAL'
+const closePublishModal = () => ({
+  type: CLOSE_PUBLISH_MODAL,
+})
+
 const ADD_ADDRESS = 'create/ADD_ADDRESS'
 const addAddress = () => ({
   type: ADD_ADDRESS,
@@ -40,6 +50,12 @@ const addressIsNotValid = (id) => ({
   type: ADDRESS_IS_NOT_VALID,
 })
 
+const UPDATE_TIP_AMOUNT = 'create/UPDATE_TIP_AMOUNT'
+const updateTipAmount = (amount) => ({
+  amount,
+  type: UPDATE_TIP_AMOUNT,
+})
+
 
 // THUNK ACTIONS
 
@@ -68,8 +84,6 @@ function initiatePublish() {
       state.create.addresses[id].value
     )
     const splitit = new SplitIt(web3, currentAccount)
-
-    console.log(addresses)
     splitit.publish(addresses)
     .then(newAddress => {
       console.log(newAddress)
@@ -82,11 +96,14 @@ function initiatePublish() {
 // ACTION EXPORTS
 
 export const actions = {
+  openPublishModal,
+  closePublishModal,
   addAddress,
   removeAddress,
   unlockAddress,
   updateAddressAndValidate,
-  initiatePublish
+  initiatePublish,
+  updateTipAmount
 }
 
 
@@ -101,6 +118,8 @@ export const addressStates = {
 
 const initialState = {
   isDisposable: false,
+  publishModalIsOpen: false,
+  tipAmount: 0.0,
   addresses: {
     [shortid.generate()]: {
       value: '',
@@ -159,6 +178,15 @@ export default (state = initialState, action) => {
       addresses[action.id].isValid = false
       addresses[action.id].addressState = addressStates.EDITING_INPUT
       return Object.assign({}, state, {addresses})
+    }
+    case OPEN_PUBLISH_MODAL: {
+      return Object.assign({}, state, {publishModalIsOpen: true})
+    }
+    case CLOSE_PUBLISH_MODAL: {
+      return Object.assign({}, state, {publishModalIsOpen: false})
+    }
+    case UPDATE_TIP_AMOUNT: {
+      return Object.assign({}, state, {tipAmount: action.amount})
     }
     default: {
       return state

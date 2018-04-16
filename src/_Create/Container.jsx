@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 
 import AddressesPane from './AddressesPane'
+import PublishModal from './PublishModal'
 import {
   Container,
   PaddingContainer,
@@ -23,14 +24,12 @@ const PublishButton = BaseButtonBlue.extend`
 class Create extends Component {
 
   static propTypes = {
-    web3: PropTypes.object,
     isConnected: PropTypes.bool,
     currentAccount: PropTypes.string,
-    publish: PropTypes.func.isRequired,
+    openPublishModal: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
-    web3: {},
     isConnected: false,
     currentAccount: '0x',
   }
@@ -42,7 +41,7 @@ class Create extends Component {
   render() {
     const {
       isConnected,
-      publish,
+      openPublishModal,
       currentAccount,
     } = this.props
 
@@ -62,11 +61,12 @@ class Create extends Component {
             <PageTitle>Create Split It Contract</PageTitle>
             <PublishButton
               disabled={ !isConnected }
-              onClick={ publish }
+              onClick={ openPublishModal }
             >
               Publish
             </PublishButton>
           </TopArea>
+          <PublishModal />
           <ContentArea>
             <AddressesPane />
           </ContentArea>
@@ -77,13 +77,12 @@ class Create extends Component {
 }
 
 const mapStateToProps = state => ({
-  web3: state.app.web3,
   isConnected: state.app.isConnected,
   currentAccount: state.app.currentAccount,
 })
 
 const mapDispatchToProps = dispatch => ({
-  publish: () => dispatch(actions.initiatePublish())
+  openPublishModal: () => dispatch(actions.openPublishModal())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Create)
