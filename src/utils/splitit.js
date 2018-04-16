@@ -26,7 +26,7 @@ class Splitit {
     })
   }
 
-  withdraw = (targetAddress) => {
+  withdraw = (targetAddress, tip) => {
     return new Promise((resolve, reject) => {
       const instance = this.splitIt.at(targetAddress)
       instance.withdraw({from: this.currentAccount})

@@ -1,4 +1,5 @@
 import React from 'react'
+import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
@@ -14,20 +15,22 @@ const InnerContainer = styled.div`
 
 class ViewAddressesPane extends React.Component {
   static propTypes = {
-    addressList: PropTypes.array.isRequired,
-    currentAccount: PropTypes.string.isRequired,
-    handleWithdraw: PropTypes.func.isRequired,
+    addressList: PropTypes.array,
+  }
+
+  static defaultProps = {
+    addressList: [],
   }
 
   renderAddresses = () =>
     this.props.addressList.map((addr, i) => {
-      return <Address
-        address={addr}
-        key={addr}
-        isDark={i % 2 === 0}
-        isMe={addr.toLowerCase() === this.props.currentAccount.toLowerCase()}
-        handleWithdraw={this.props.handleWithdraw}
-      />
+      return (
+        <Address
+          address={addr}
+          key={addr}
+          isDark={i % 2 === 0}
+        />
+      )
     })
 
   render() {
@@ -41,4 +44,8 @@ class ViewAddressesPane extends React.Component {
   }
 }
 
-export default ViewAddressesPane
+const mapStateToProps = state => ({
+  addressList: state.view.addressList
+})
+
+export default connect(mapStateToProps)(ViewAddressesPane)
