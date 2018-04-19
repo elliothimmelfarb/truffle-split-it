@@ -72,7 +72,7 @@ class AddressesPane extends React.Component {
         <InnerContainer>
           {/* <TransitionGroup className="address-list"> */}
           { this.renderAddresses() }
-          {/* </TransitionGroup> */}
+          {/*</TransitionGroup> */}
         </InnerContainer>
         <AddButton
           onClick={ addAddress }

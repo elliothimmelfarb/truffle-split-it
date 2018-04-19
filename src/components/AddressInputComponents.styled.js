@@ -24,7 +24,7 @@ export const AddressInnerContainer = styled.div`
   justify-content: space-around;
 `
 export const InputContainer = styled.div`
-  flex: 20 0;
+  width: 100%;
   display: flex;
   align-items: center;
   height: 100%;

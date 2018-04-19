@@ -13,6 +13,7 @@ import {
   InputContainer,
   ButtonContainer,
   Input,
+  InputConfirmButton,
   LockedInput,
   LockedInputText,
 } from '../components/AddressInputComponents.styled'
@@ -39,6 +40,9 @@ const EditButton = LockedInputButton.extend`
 const DeleteButton = LockedInputButton.extend`
   background-color: ${colors.delete_button_background};
   border: 1px solid ${colors.delete_button_stroke};
+  margin-left: 5px;
+  height: 38px;
+  width: 38px;
   &:hover {
     background-color: #690800;
   }
@@ -76,6 +80,11 @@ class Address extends React.Component {
     updateAddressAndValidate(id, e.target.value)
   }
 
+  handleLockRequest = () => {
+    const { id, value, updateAddressAndValidate } = this.props;
+    updateAddressAndValidate(id, value);
+  }
+
   render() {
     const {
       unlockAddress,
@@ -106,13 +115,11 @@ class Address extends React.Component {
               </InputContainer>
               <ButtonContainer>
                 { this.props.isDisposable &&
-                  <ButtonContainer>
                     <DeleteButton
                       onClick={() => removeAddress(id)}
                     >
                       <DeleteSvg />
                     </DeleteButton>
-                  </ButtonContainer>
                 }
               </ButtonContainer>
             </AddressInnerContainer>
@@ -134,14 +141,17 @@ class Address extends React.Component {
                 />
               </InputContainer>
               <ButtonContainer>
+                <InputConfirmButton
+                  isvalid={ isValid }
+                  onClick={ this.handleLockRequest }>
+                  Done
+                </InputConfirmButton>
                 { this.props.isDisposable &&
-                  <ButtonContainer>
                     <DeleteButton
                       onClick={() => removeAddress(id)}
                     >
                       <DeleteSvg />
                     </DeleteButton>
-                  </ButtonContainer>
                 }
               </ButtonContainer>
             </AddressInnerContainer>
