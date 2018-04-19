@@ -176,7 +176,6 @@ export default (state = initialState, action) => {
     case ADDRESS_IS_NOT_VALID: {
       const addresses = {...state.addresses}
       addresses[action.id].isValid = false
-      addresses[action.id].addressState = addressStates.EDITING_INPUT
       return Object.assign({}, state, {addresses})
     }
     case OPEN_PUBLISH_MODAL: {

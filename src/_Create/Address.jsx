@@ -21,8 +21,9 @@ import {actions, addressStates} from './Create.ducks'
 
 const LockedInputButton = styled.div`
   display: flex;
-  flex: 1 0;
-  height: 100%;
+  height: 40px;
+  width: 40px;
+  margin-left: 5px;
   align-items: center;
   justify-content: center;
   border-radius: 5px;
@@ -32,7 +33,6 @@ const LockedInputButton = styled.div`
 const EditButton = LockedInputButton.extend`
   background-color: ${colors.button_background};
   border: 1px solid ${colors.button_stroke};
-  margin-right: 5px;
   &:hover {
     background-color: #326E9C;
   }
@@ -40,9 +40,6 @@ const EditButton = LockedInputButton.extend`
 const DeleteButton = LockedInputButton.extend`
   background-color: ${colors.delete_button_background};
   border: 1px solid ${colors.delete_button_stroke};
-  margin-left: 5px;
-  height: 38px;
-  width: 38px;
   &:hover {
     background-color: #690800;
   }
@@ -138,6 +135,7 @@ class Address extends React.Component {
                   onChange={ this.handleUpdateValue }
                   isvalid={ isValid }
                   isempty={ value.length < 1 }
+                  flatRight={ true }
                 />
               </InputContainer>
               <ButtonContainer>
