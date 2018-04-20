@@ -4,7 +4,7 @@ import colors from '../styles/colors'
 
 export const AddressContainer = styled.div`
   display: flex;
-  height: 50px;
+  height: 56px;
   width: 100%;
   max-width: 100vw;
   align-items: center;
