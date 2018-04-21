@@ -140,6 +140,9 @@ const initialState = {
 export default (state = initialState, action) => {
   switch(action.type) {
     case ADD_ADDRESS: {
+      if (Object.keys(state.addresses).length > 9) {
+        return state;
+      }
       const addresses = {
         ...state.addresses,
         [shortid.generate()]: {
