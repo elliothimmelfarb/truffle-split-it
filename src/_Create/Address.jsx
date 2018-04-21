@@ -63,12 +63,13 @@ class Address extends React.Component {
   }
 
   shouldComponentUpdate = nextProps => {
-    const { isValid, value, addressState, isDisposable } = this.props
+    const { isValid, value, addressState, isDisposable, isDark } = this.props
     return (
       isValid !== nextProps.isValid ||
       value !== nextProps.value ||
       addressState !== nextProps.addressState ||
-      isDisposable !== nextProps.isDisposable
+      isDisposable !== nextProps.isDisposable ||
+      isDark !== nextProps.isDark
     )
   }
 
