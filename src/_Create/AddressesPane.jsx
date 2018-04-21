@@ -26,7 +26,7 @@ const Container = styled.div`
 const InnerContainer = styled.div`
 `
 const AddButton = BaseButtonBlue.extend`
-  height: 50px;
+  height: 45px;
   font-size: 1.2em;
   border-radius: 0 0 5px 5px;
   border-top: none;
@@ -72,7 +72,7 @@ class AddressesPane extends React.Component {
         <InnerContainer>
           {/* <TransitionGroup className="address-list"> */}
           { this.renderAddresses() }
-          {/* </TransitionGroup> */}
+          {/*</TransitionGroup> */}
         </InnerContainer>
         <AddButton
           onClick={ addAddress }

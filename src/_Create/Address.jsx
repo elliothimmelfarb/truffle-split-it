@@ -13,6 +13,7 @@ import {
   InputContainer,
   ButtonContainer,
   Input,
+  InputConfirmButton,
   LockedInput,
   LockedInputText,
 } from '../components/AddressInputComponents.styled'
@@ -20,8 +21,9 @@ import {actions, addressStates} from './Create.ducks'
 
 const LockedInputButton = styled.div`
   display: flex;
-  flex: 1 0;
-  height: 100%;
+  height: 40px;
+  width: 40px;
+  margin-left: 5px;
   align-items: center;
   justify-content: center;
   border-radius: 5px;
@@ -31,7 +33,6 @@ const LockedInputButton = styled.div`
 const EditButton = LockedInputButton.extend`
   background-color: ${colors.button_background};
   border: 1px solid ${colors.button_stroke};
-  margin-right: 5px;
   &:hover {
     background-color: #326E9C;
   }
@@ -62,18 +63,24 @@ class Address extends React.Component {
   }
 
   shouldComponentUpdate = nextProps => {
-    const { isValid, value, addressState, isDisposable } = this.props
+    const { isValid, value, addressState, isDisposable, isDark } = this.props
     return (
       isValid !== nextProps.isValid ||
       value !== nextProps.value ||
       addressState !== nextProps.addressState ||
-      isDisposable !== nextProps.isDisposable
+      isDisposable !== nextProps.isDisposable ||
+      isDark !== nextProps.isDark
     )
   }
 
   handleUpdateValue = (e) => {
     const {id, updateAddressAndValidate} = this.props
     updateAddressAndValidate(id, e.target.value)
+  }
+
+  handleLockRequest = () => {
+    const { id, value, updateAddressAndValidate } = this.props;
+    updateAddressAndValidate(id, value);
   }
 
   render() {
@@ -106,13 +113,11 @@ class Address extends React.Component {
               </InputContainer>
               <ButtonContainer>
                 { this.props.isDisposable &&
-                  <ButtonContainer>
                     <DeleteButton
                       onClick={() => removeAddress(id)}
                     >
                       <DeleteSvg />
                     </DeleteButton>
-                  </ButtonContainer>
                 }
               </ButtonContainer>
             </AddressInnerContainer>
@@ -131,17 +136,21 @@ class Address extends React.Component {
                   onChange={ this.handleUpdateValue }
                   isvalid={ isValid }
                   isempty={ value.length < 1 }
+                  flatRight={ true }
                 />
               </InputContainer>
               <ButtonContainer>
+                <InputConfirmButton
+                  isvalid={ isValid }
+                  onClick={ this.handleLockRequest }>
+                  Done
+                </InputConfirmButton>
                 { this.props.isDisposable &&
-                  <ButtonContainer>
                     <DeleteButton
                       onClick={() => removeAddress(id)}
                     >
                       <DeleteSvg />
                     </DeleteButton>
-                  </ButtonContainer>
                 }
               </ButtonContainer>
             </AddressInnerContainer>

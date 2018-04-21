@@ -4,7 +4,7 @@ import colors from '../styles/colors'
 
 export const AddressContainer = styled.div`
   display: flex;
-  height: 65px;
+  height: 56px;
   width: 100%;
   max-width: 100vw;
   align-items: center;
@@ -16,32 +16,32 @@ export const AddressContainer = styled.div`
 export const AddressInnerContainer = styled.div`
   display: flex;
   flex: 1 0;
+  height: 50px;
   max-width: 98%;
   max-width: 100vw;
-  height: 100%;
   align-items: center;
   margin: 5px;
   justify-content: space-around;
 `
 export const InputContainer = styled.div`
-  flex: 20 0;
+  width: 100%;
+  height: 40px;
   display: flex;
   align-items: center;
-  height: 100%;
 `
 export const ButtonContainer = styled.div`
   flex: 1 0;
   display: flex;
-  height: 60%;
+  height: 40px;
   align-items: center;
   justify-content: flex-end;
 `
 export const Input = styled.input`
-  height: 60%;
+  height: 100%;
   flex: 1 0;
   font-size: 13px;
   border-radius: ${
-    props => props.flatEdge ?
+    props => props.flatRight ?
     '5px 0 0 5px' :
     '5px'
   };
