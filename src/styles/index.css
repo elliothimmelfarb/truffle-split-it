@@ -7,11 +7,6 @@ body {
   justify-content: center;
 }
 
-#background {
-  display: flex;
-  flex: 1 0;
-}
-
 #root {
   display: flex;
   flex: 1 0;
