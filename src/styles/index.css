@@ -4,12 +4,12 @@ body {
   font-family: Roboto, sans-serif;
   display: flex;
   background-color: #2A2A2A !important;
+  justify-content: center;
 }
 
 #background {
   display: flex;
   flex: 1 0;
-  justify-content: center;
 }
 
 #root {
