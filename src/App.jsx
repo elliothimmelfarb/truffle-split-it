@@ -29,6 +29,7 @@ const RoutesContainer = styled.div`
 const Header = styled.header`
   display: flex;
   flex: 1 0;
+  min-height: 60px;
   width: 100%;
   background-color: ${colors.navbar_bg};
   justify-content: space-between;
