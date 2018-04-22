@@ -6,17 +6,19 @@ contract SplitIt {
   uint totalReceived;
   mapping (address => uint) withdrawnAmounts;
 
+  address constant public tippingAddress = 0x8142C51DB7e1807e64b11e54983F5b46FBB425dB;
+
   function SplitIt(address[] _receivingAddresses) payable public {
     receivingAddresses = _receivingAddresses;
-    updateTotalReceived();
+    incrementTotalReceivedBy(msg.value);
   }
 
   function () payable public {
-    updateTotalReceived();
+    incrementTotalReceivedBy(msg.value);
   }
 
-  function updateTotalReceived() internal {
-    totalReceived += msg.value;
+  function incrementTotalReceivedBy(uint amount) internal {
+    totalReceived += amount;
   }
 
   function numberOfReceivingAddresses() public constant
@@ -50,15 +52,45 @@ contract SplitIt {
 
   }
 
+  function withdrawWithTip() canWithdraw payable public {
+
+    withdraw();
+
+    if (tipAmount > 0) {
+      tippingAddress.transfer(tipAmount);
+    }
+
+  }
+
+  function depositWithTip(uint tipAmount) payable public {
+
+    if (tipAmount > 0) {
+      uint incrementAmount = msg.value - tipAmount;
+      tippingAddress.transfer(tipAmount);
+      incrementTotalReceivedBy(incrementAmount);
+
+    } else {
+      incrementTotalReceivedBy(msg.value);
+
+    }
+
+  }
+
 }
 
 contract SplitItCreator {
 
   event Creation(SplitIt indexed contractAddress);
 
-  function createSplitIt(address[] receivingAddresses) public {
+  address constant public tippingAddress = 0x8142C51DB7e1807e64b11e54983F5b46FBB425dB;
+
+  function createSplitIt(address[] receivingAddresses, uint tipAmount) public payable {
     SplitIt splitIt = new SplitIt(receivingAddresses);
     emit Creation(splitIt);
+
+    if (tipAmount > 0) {
+      tippingAddress.transfer(tipAmount);
+    }
   }
 
 }
