@@ -17,7 +17,7 @@ import './index.css';
 
 
 const Container = styled.div`
-  flex: 1 0;
+  flex: 1 1 auto;
   display: flex;
   max-width: 100%;
   flex-direction: column;
@@ -26,7 +26,7 @@ const Container = styled.div`
 const InnerContainer = styled.div`
 `
 const AddButton = BaseButtonBlue.extend`
-  height: 45px;
+  min-height: 45px;
   font-size: 1.2em;
   border-radius: 0 0 5px 5px;
   border-top: none;

@@ -18,6 +18,7 @@ export const TopArea = styled.div`
   display: flex;
   width: 100%;
   flex: 1 1;
+  min-height: 68px;
   font-size: 1.2em;
   flex-direction: row;
   align-items: center;
@@ -75,7 +76,7 @@ export const NotConnectedPane = styled.div`
   background-color: red;
 `
 export const ContentArea = styled.div`
-  flex: 12 1;
+  flex: 12 0 auto;
   display: flex;
   width: 100%;
   border-radius: 5px;
