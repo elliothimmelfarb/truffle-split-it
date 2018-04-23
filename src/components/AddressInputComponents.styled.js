@@ -1,6 +1,18 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 import colors from '../styles/colors'
+
+
+const scaleHeight = keyframes`
+  0% {
+    height: 0px;
+    transform: scaleY(0);
+  }
+  100% {
+    height: 56px;
+    transform: scaleY(1);
+  }
+`;
 
 export const AddressContainer = styled.div`
   display: flex;
@@ -9,6 +21,8 @@ export const AddressContainer = styled.div`
   max-width: 100vw;
   align-items: center;
   justify-content: center;
+  transform-origin: top;
+  animation: 1s ${scaleHeight} ease-in;
   background-color: ${
     props => props.isdark ? `${colors.address_bg_dark}` : `${colors.address_bg_light}`
   };

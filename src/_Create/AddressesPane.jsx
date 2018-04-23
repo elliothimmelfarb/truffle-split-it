@@ -2,10 +2,6 @@ import React from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import {
-  CSSTransition,
-  TransitionGroup,
-} from 'react-transition-group';
 
 import Address from './Address'
 import AddSvg from '../icons/Add'
@@ -13,7 +9,6 @@ import {
   BaseButtonBlue,
 } from '../components/TopLevelComponents.styled'
 import {actions} from './Create.ducks'
-import './index.css';
 
 
 const Container = styled.div`
@@ -53,13 +48,11 @@ class AddressesPane extends React.Component {
     return Object.keys(addresses).map(id => {
       isDark = !isDark
       return (
-        // <CSSTransition timeout={100} key={id} classNames="fade">
           <Address
             key={ id }
             id={ id }
             isDark={ isDark }
           />
-        // </CSSTransition>
       )
     })
   }
@@ -70,9 +63,7 @@ class AddressesPane extends React.Component {
     return (
       <Container>
         <InnerContainer>
-          {/* <TransitionGroup className="address-list"> */}
           { this.renderAddresses() }
-          {/*</TransitionGroup> */}
         </InnerContainer>
         <AddButton
           onClick={ addAddress }
